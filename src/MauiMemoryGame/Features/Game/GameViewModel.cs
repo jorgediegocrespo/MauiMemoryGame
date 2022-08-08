@@ -1,14 +1,28 @@
-﻿namespace MauiMemoryGame.Features;
+﻿using System.Reactive.Concurrency;
+
+namespace MauiMemoryGame.Features;
 
 public class GameViewModel : BaseViewModel, IQueryAttributable
 {
+    private IDisposable timer;
+
     public GameViewModel(ILogService logService, INavigationService navigationService) : base(logService, navigationService)
     {
+    }
+
+    ~GameViewModel()
+    {
+        timer?.Dispose();
     }
 
     [Reactive] public Themes SelectedTheme { get; set; }
     [Reactive] public Level SelectedLevel { get; set; }
     [Reactive] public Card[,] Board { get; set; }
+    [Reactive] public bool GameOver { get; set; }
+    [Reactive] public bool GameWon { get; set; }
+    [Reactive] public int AttempsNumber { get; set; }
+    [Reactive] public int CardPairsFount { get; set; }
+    [Reactive] public TimeSpan RemainingTime { get; set; }
     public int RowCount => SelectedLevel switch
     {
         Level.Low => 4,
@@ -24,8 +38,8 @@ public class GameViewModel : BaseViewModel, IQueryAttributable
         _ => throw new InvalidOperationException()
     };
 
-    public ReactiveCommand<Unit, Unit> CreateBoardCommand { get; private set; }
-    public extern bool IsCreatingBoard { [ObservableAsProperty] get; }
+    public ReactiveCommand<Unit, Unit> InitGameCommand { get; private set; }
+    public extern bool IsInitiatingGame { [ObservableAsProperty] get; }
 
     public ReactiveCommand<Tuple<Card, Card>, bool> EqualsCardsCommand { get; private set; }
     public extern bool IsComparingCards{ [ObservableAsProperty] get; }
@@ -34,8 +48,8 @@ public class GameViewModel : BaseViewModel, IQueryAttributable
     {
         await base.OnAppearingAsync();
 
-        disposables.Add(CreateBoardCommand.ThrownExceptions.Subscribe(logService.TraceError));
-        disposables.Add(CreateBoardCommand.IsExecuting.ToPropertyEx(this, x => x.IsCreatingBoard));
+        disposables.Add(InitGameCommand.ThrownExceptions.Subscribe(logService.TraceError));
+        disposables.Add(InitGameCommand.IsExecuting.ToPropertyEx(this, x => x.IsInitiatingGame));
 
         disposables.Add(EqualsCardsCommand.ThrownExceptions.Subscribe(logService.TraceError));
         disposables.Add(EqualsCardsCommand.IsExecuting.ToPropertyEx(this, x => x.IsComparingCards));
@@ -45,7 +59,7 @@ public class GameViewModel : BaseViewModel, IQueryAttributable
     {
         base.CreateCommands();
 
-        CreateBoardCommand = ReactiveCommand.Create(CreateBoard);
+        InitGameCommand = ReactiveCommand.Create(InitGame);
         EqualsCardsCommand = ReactiveCommand.Create<Tuple<Card, Card>, bool>(EqualsCards);
     }
 
@@ -54,7 +68,29 @@ public class GameViewModel : BaseViewModel, IQueryAttributable
         SelectedTheme = (Themes)query[nameof(SelectedTheme)];
         SelectedLevel = (Level)query[nameof(SelectedLevel)];
 
-        CreateBoardCommand.Execute().Subscribe();
+        InitGameCommand.Execute().Subscribe();
+    }
+
+    private void InitGame()
+    {
+        CreateBoard();
+        InitTimer();
+    }
+
+    private void InitTimer()
+    {
+        RemainingTime = SelectedLevel switch
+        {
+            Level.Low => TimeSpan.FromMinutes(5),
+            Level.Medium => TimeSpan.FromMinutes(4),
+            Level.High => TimeSpan.FromMinutes(3),
+            _ => throw new InvalidOperationException()
+        };
+
+        timer = Observable.Interval(TimeSpan.FromSeconds(1))
+            .TakeWhile(_ => RemainingTime > TimeSpan.Zero)
+            .ObserveOn(RxApp.MainThreadScheduler)
+            .Subscribe(_ => RemainingTime = RemainingTime.Subtract(TimeSpan.FromSeconds(1)));
     }
 
     private void CreateBoard()
@@ -92,7 +128,7 @@ public class GameViewModel : BaseViewModel, IQueryAttributable
     private int GetImageIndex(List<int> usedImages)
     {
         Random random = new Random();
-        int imageIndex = random.Next(16);
+        int imageIndex = random.Next(1, 15);
 
         if (!usedImages.Contains(imageIndex))
             return imageIndex;
@@ -169,11 +205,13 @@ public class GameViewModel : BaseViewModel, IQueryAttributable
 
     private bool EqualsCards(Tuple<Card, Card> cards)
     {
+        AttempsNumber++;
         if (cards.Item1.ImagePath != cards.Item2.ImagePath)
             return false;
 
         cards.Item1.Fount = true;
         cards.Item2.Fount = true;
+        CardPairsFount++;
 
         return true;
     }

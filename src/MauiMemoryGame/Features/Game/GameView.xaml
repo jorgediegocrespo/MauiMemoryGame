@@ -9,7 +9,7 @@
                       x:TypeArguments="features:GameViewModel"
                       Shell.NavBarIsVisible="False">
     
-    <Grid Padding="10">
+    <Grid Padding="10" RowDefinitions="50,50,*" ColumnDefinitions="2*,*">
         <Grid.Background>
             <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                 <GradientStop Color="{AppThemeBinding Light={StaticResource BackgroundOneLight}, Dark={StaticResource BackgroundOneDark}}" Offset="0.1" />
@@ -17,10 +17,29 @@
             </LinearGradientBrush>
         </Grid.Background>
 
-        <Grid x:Name="gridBoard" RowSpacing="5" ColumnSpacing="5" 
+        <Label x:Name="lbPairs" Grid.Row="0" Grid.Column="0"
+               MaxLines="1" LineBreakMode="TailTruncation"
+               HorizontalTextAlignment="Start" VerticalTextAlignment="End"
+               HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+               IsVisible="False" />
+
+        <Label x:Name="lbAttemps" Grid.Row="1" Grid.Column="0"
+               MaxLines="1" LineBreakMode="TailTruncation"
+               HorizontalTextAlignment="Start" VerticalTextAlignment="Start"
+               HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+               IsVisible="False" />
+
+        <Label x:Name="lbTimer" Grid.RowSpan="2" Grid.Column="1"
+               MaxLines="1" LineBreakMode="TailTruncation"
+               HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
+               HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+               IsVisible="False" />
+
+        <Grid x:Name="gridBoard" Grid.Row="2" Grid.ColumnSpan="2"
+              RowSpacing="5" ColumnSpacing="5" 
               IsVisible="false"/>
 
-        <ActivityIndicator x:Name="aiCreatingBoard" 
+        <ActivityIndicator x:Name="aiCreatingBoard" Grid.RowSpan="3" Grid.ColumnSpan="2"
                            IsVisible="true" IsRunning="true"
                            HorizontalOptions="Center" VerticalOptions="Center"/>
 

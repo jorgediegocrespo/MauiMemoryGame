@@ -13,6 +13,14 @@ public partial class GameView
 
     [Reactive] public bool IsDrawingBoard { get; set; }
 
+	protected override void CreateBindings(CompositeDisposable disposables)
+	{
+		base.CreateBindings(disposables);
+        disposables.Add(this.OneWayBind(ViewModel, vm => vm.AttempsNumber, v => v.lbAttemps.Text, x => $"{x} movimientos")); //TODO Translate
+        disposables.Add(this.OneWayBind(ViewModel, vm => vm.CardPairsFount, v => v.lbPairs.Text, x => $"{x} parejas encontradas")); //TODO Translate
+        disposables.Add(this.OneWayBind(ViewModel, vm => vm.RemainingTime, v => v.lbTimer.Text, x => $"Faltan {x.ToString("g")}")); //TODO Translate
+    }
+
     protected override void ObserveValues(CompositeDisposable disposables)
 	{
 		base.ObserveValues(disposables);
@@ -21,7 +29,7 @@ public partial class GameView
 			.ObserveOn(RxApp.MainThreadScheduler)
 			.Subscribe(BuildBoard));
 
-        disposables.Add(this.WhenAnyValue(x => x.ViewModel.IsCreatingBoard, x => x.IsDrawingBoard)
+        disposables.Add(this.WhenAnyValue(x => x.ViewModel.IsInitiatingGame, x => x.IsDrawingBoard)
             .ObserveOn(RxApp.MainThreadScheduler)
             .Subscribe((x) => ManageBoardVisibility(x.Item1 || x.Item2)));
     }
@@ -111,5 +119,8 @@ public partial class GameView
 		aiCreatingBoard.IsRunning = isBuildingBoard;
         aiCreatingBoard.IsVisible = isBuildingBoard;
 		gridBoard.IsVisible = !isBuildingBoard;
+		lbPairs.IsVisible = !isBuildingBoard;
+        lbAttemps.IsVisible = !isBuildingBoard;
+        lbTimer.IsVisible = !isBuildingBoard;
     }
 }
