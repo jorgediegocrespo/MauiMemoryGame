@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiMemoryGame.Features.CardView">
+    <Grid>
+        <Frame x:Name="frContent" 
+               CornerRadius="20" HasShadow="True" 
+               IsClippedToBounds="True"
+               IsVisible="False" Padding="0"
+               HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <Grid Padding="0" Margin="0">
+                <Image x:Name="imgContent" 
+                       Aspect="AspectFill"
+                       VerticalOptions="FillAndExpand"  HorizontalOptions="FillAndExpand" />
+            </Grid>
+        </Frame>
+
+        <Frame x:Name="frBackwards" 
+               CornerRadius="20" HasShadow="True" 
+               BackgroundColor="{AppThemeBinding Light={StaticResource CardBackgroundColorLight}, Dark={StaticResource CardBackgroundColorDark}}"
+               BorderColor="{AppThemeBinding Light={StaticResource CardBorderColorLight}, Dark={StaticResource CardBorderColorDark}}"
+               IsVisible="True" 
+               HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" />
+    </Grid>
+</ContentView>

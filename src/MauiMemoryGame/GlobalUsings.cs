@@ -1,0 +1,10 @@
+﻿global using MauiMemoryGame.Features;
+global using MauiMemoryGame.Services;
+global using MauiMemoryGame.Base;
+global using ReactiveUI;
+global using ReactiveUI.Fody.Helpers;
+global using System.Reactive;
+global using MauiMemoryGame.Resources.Texts;
+global using System.Reactive.Disposables;
+global using System.Reactive.Linq;
+global using MauiMemoryGame.Models;

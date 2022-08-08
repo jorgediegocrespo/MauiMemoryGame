@@ -1,0 +1,33 @@
+﻿<?xml version = "1.0" encoding = "UTF-8" ?>
+<Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiMemoryGame.App">
+    <Application.Resources>
+        <ResourceDictionary>
+
+            <Color x:Key="BackgroundOneLight">#FFFFFF</Color>
+            <Color x:Key="BackgroundTwoLight">#FFADD8E6</Color>
+            <Color x:Key="ButtonColorLight">#FF00008B</Color>
+            <Color x:Key="ButtonTextColorLight">#FFFFFF</Color>
+            <Color x:Key="CardBackgroundColorLight">#FF00008B</Color>
+            <Color x:Key="CardBorderColorLight">#FFFFFF</Color>
+
+            <Color x:Key="BackgroundOneDark">#FFFFFF</Color>
+            <Color x:Key="BackgroundTwoDark">#FFADD8E6</Color>
+            <Color x:Key="ButtonColorDark">#FF00008B</Color>
+            <Color x:Key="ButtonTextColorDark">#FFFFFF</Color>
+            <Color x:Key="CardBackgroundColorDark">#FF00008B</Color>
+            <Color x:Key="CardBorderColorDark">#FFFFFF</Color>
+
+            <Color x:Key="TitleColorDark">#FFFFFF</Color>
+            <Color x:Key="TitleColorLight">#000000</Color>
+
+            <Style x:Key="lbTitle" TargetType="Label">
+                <Setter Property="FontSize" Value="Title" />
+                <Setter Property="HorizontalTextAlignment" Value="Center" />
+                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource TitleColorLight}, Dark={StaticResource TitleColorDark}}" />
+            </Style>
+
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

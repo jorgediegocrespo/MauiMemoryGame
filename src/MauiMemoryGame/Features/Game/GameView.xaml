@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<base:BaseContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                      xmlns:base="clr-namespace:MauiMemoryGame.Base"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                      xmlns:features="clr-namespace:MauiMemoryGame.Features"
+                      xmlns:texts="clr-namespace:MauiMemoryGame.Resources.Texts"
+                      x:Class="MauiMemoryGame.Features.GameView"
+                      x:DataType="features:GameViewModel" 
+                      x:TypeArguments="features:GameViewModel"
+                      Shell.NavBarIsVisible="False">
+    
+    <Grid Padding="10">
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="{AppThemeBinding Light={StaticResource BackgroundOneLight}, Dark={StaticResource BackgroundOneDark}}" Offset="0.1" />
+                <GradientStop Color="{AppThemeBinding Light={StaticResource BackgroundTwoLight}, Dark={StaticResource BackgroundTwoDark}}" Offset="1.0" />
+            </LinearGradientBrush>
+        </Grid.Background>
+
+        <Grid x:Name="gridBoard" RowSpacing="5" ColumnSpacing="5" 
+              IsVisible="false"/>
+
+        <ActivityIndicator x:Name="aiCreatingBoard" 
+                           IsVisible="true" IsRunning="true"
+                           HorizontalOptions="Center" VerticalOptions="Center"/>
+
+    </Grid>
+
+</base:BaseContentPage>

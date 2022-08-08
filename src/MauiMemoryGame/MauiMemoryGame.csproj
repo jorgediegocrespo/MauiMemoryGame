@@ -1,0 +1,123 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net6.0-android;net6.0-ios;net6.0-maccatalyst</TargetFrameworks>
+		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net6.0-windows10.0.19041.0</TargetFrameworks>
+		<!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
+		<!-- <TargetFrameworks>$(TargetFrameworks);net6.0-tizen</TargetFrameworks> -->
+		<OutputType>Exe</OutputType>
+		<RootNamespace>MauiMemoryGame</RootNamespace>
+		<UseMaui>true</UseMaui>
+		<SingleProject>true</SingleProject>
+		<ImplicitUsings>enable</ImplicitUsings>
+
+		<!-- Display name -->
+		<ApplicationTitle>MauiMemoryGame</ApplicationTitle>
+
+		<!-- App Identifier -->
+		<ApplicationId>com.companyname.mauimemorygame</ApplicationId>
+		<ApplicationIdGuid>E60DD2AD-01DC-4701-A1E1-FDDF312C7271</ApplicationIdGuid>
+
+		<!-- Versions -->
+		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+		<ApplicationVersion>1</ApplicationVersion>
+
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">14.2</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">14.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
+		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<!-- App Icon -->
+		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#3376A8" />
+
+		<!-- Splash Screen -->
+		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#3376A8" />
+		
+		<!-- Images -->
+		<MauiImage Include="Resources\Images\*" />
+
+		<!-- Custom Fonts -->
+		<MauiFont Include="Resources\Fonts\*" />
+
+		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
+		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="Resources\Images\dc_1.jpg" />
+	  <None Remove="Resources\Images\dc_10.jpg" />
+	  <None Remove="Resources\Images\dc_11.jpg" />
+	  <None Remove="Resources\Images\dc_12.jpg" />
+	  <None Remove="Resources\Images\dc_13.jpg" />
+	  <None Remove="Resources\Images\dc_14.jpg" />
+	  <None Remove="Resources\Images\dc_15.jpg" />
+	  <None Remove="Resources\Images\dc_2.jpg" />
+	  <None Remove="Resources\Images\dc_3.jpg" />
+	  <None Remove="Resources\Images\dc_4.jpg" />
+	  <None Remove="Resources\Images\dc_5.jpg" />
+	  <None Remove="Resources\Images\dc_6.jpg" />
+	  <None Remove="Resources\Images\dc_7.jpg" />
+	  <None Remove="Resources\Images\dc_8.jpg" />
+	  <None Remove="Resources\Images\dc_9.jpg" />
+	  <None Remove="Resources\Images\dc_logo.png" />
+	  <None Remove="Resources\Images\marvel_logo.png" />
+	  <None Remove="Resources\Images\simpsons_logo.png" />
+	  <None Remove="Resources\Images\star_wars_logo.png" />
+	</ItemGroup>
+
+
+	<ItemGroup>
+	  <None Include="..\.editorconfig" Link=".editorconfig" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="ReactiveUI.Fody" Version="18.1.8" />
+	  <PackageReference Include="ReactiveUI.Maui" Version="18.1.8" />
+	  <PackageReference Include="SkiaSharp.Views.Maui.Controls" Version="2.88.1-preview.71" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Features\DifficultySelector\LevelSelectorView.xaml.cs">
+	    <DependentUpon>LevelSelectorView.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Features\ThemeSelector\ThemeSelectorView.xaml.cs">
+	    <DependentUpon>ThemeSelectorView.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Resources\Texts\TextsResource.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>TextsResource.resx</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Update="Resources\Texts\TextsResource.resx">
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	    <LastGenOutput>TextsResource.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Controls\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="AppShell.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Features\DifficultySelector\LevelSelectorView.xaml">
+	    <Generator></Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Features\Game\CardView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Features\Game\GameView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	</ItemGroup>
+
+</Project>

@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<base:BaseContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                      xmlns:base="clr-namespace:MauiMemoryGame.Base"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                      xmlns:viewmodel="clr-namespace:MauiMemoryGame.Features.ThemeSelectorViewModel"
+                      xmlns:features="clr-namespace:MauiMemoryGame.Features"
+                      xmlns:texts="clr-namespace:MauiMemoryGame.Resources.Texts"                      
+                      x:Class="MauiMemoryGame.Features.ThemeSelectorView"
+                      x:DataType="features:ThemeSelectorViewModel" 
+                      x:TypeArguments="features:ThemeSelectorViewModel"
+                      Shell.NavBarIsVisible="False">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="ImageButton">
+                <Setter Property="CornerRadius" Value="20" />
+                <Setter Property="HeightRequest" Value="40" />
+                <Setter Property="Padding" Value="5" />
+                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+                <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource ButtonColorLight}, Dark={StaticResource ButtonColorDark}}" />
+                <Setter Property="BorderWidth" Value="2" />
+                <Setter Property="BackgroundColor" Value="Transparent" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="*,50,50,*" ColumnDefinitions="*,150,150,*" RowSpacing="10" ColumnSpacing="5">
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="{AppThemeBinding Light={StaticResource BackgroundOneLight}, Dark={StaticResource BackgroundOneDark}}" Offset="0.1" />
+                <GradientStop Color="{AppThemeBinding Light={StaticResource BackgroundTwoLight}, Dark={StaticResource BackgroundTwoDark}}" Offset="1.0" />
+            </LinearGradientBrush>
+        </Grid.Background>
+
+        <Label Grid.ColumnSpan="4" Style="{StaticResource lbTitle}"
+               Text="{x:Static texts:TextsResource.ThemeSelectorTitle}" 
+               Margin="20" 
+               HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand"  />
+        
+        <ImageButton x:Name="btDc" Grid.Row="1" Grid.Column="1" Source="dc_logo.png" />
+        <ImageButton x:Name="btMarvel" Grid.Row="1" Grid.Column="2" Source="marvel_logo.png" />
+        <ImageButton x:Name="btSimpson" Grid.Row="2" Grid.Column="1" Source="simpsons_logo.png" />
+        <ImageButton x:Name="btStarWars" Grid.Row="2" Grid.Column="2" Source="star_wars_logo.png" />
+    </Grid>
+
+</base:BaseContentPage>
