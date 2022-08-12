@@ -23,16 +23,23 @@ public class GameViewModel : BaseViewModel, IQueryAttributable
     [Reactive] public int AttempsNumber { get; set; }
     [Reactive] public int CardPairsFount { get; set; }
     [Reactive] public TimeSpan RemainingTime { get; set; }
+    public TimeSpan TotalTime => SelectedLevel switch
+    {
+        Level.Low => TimeSpan.FromSeconds(20), //TODO Change TimeSpan.FromMinutes(5),
+        Level.Medium => TimeSpan.FromMinutes(4),
+        Level.High => TimeSpan.FromMinutes(2),
+        _ => throw new InvalidOperationException()
+    };
     public int RowCount => SelectedLevel switch
     {
-        Level.Low => 4,
+        Level.Low => 2, //TODO Change 4,
         Level.Medium => 6,
         Level.High => 6,
         _ => throw new InvalidOperationException()
     };
     public int ColumnCount => SelectedLevel switch
     {
-        Level.Low => 4,
+        Level.Low => 2, //TODO Change 4,
         Level.Medium => 4,
         Level.High => 5,
         _ => throw new InvalidOperationException()
@@ -60,7 +67,7 @@ public class GameViewModel : BaseViewModel, IQueryAttributable
         base.CreateCommands();
 
         InitGameCommand = ReactiveCommand.Create(InitGame);
-        EqualsCardsCommand = ReactiveCommand.Create<Tuple<Card, Card>, bool>(EqualsCards);
+        EqualsCardsCommand = ReactiveCommand.CreateFromTask<Tuple<Card, Card>, bool>(EqualsCards);
     }
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
@@ -79,18 +86,14 @@ public class GameViewModel : BaseViewModel, IQueryAttributable
 
     private void InitTimer()
     {
-        RemainingTime = SelectedLevel switch
-        {
-            Level.Low => TimeSpan.FromMinutes(5),
-            Level.Medium => TimeSpan.FromMinutes(4),
-            Level.High => TimeSpan.FromMinutes(3),
-            _ => throw new InvalidOperationException()
-        };
+        RemainingTime = new TimeSpan(TotalTime.Ticks);
 
         timer = Observable.Interval(TimeSpan.FromSeconds(1))
             .TakeWhile(_ => RemainingTime > TimeSpan.Zero)
             .ObserveOn(RxApp.MainThreadScheduler)
-            .Subscribe(_ => RemainingTime = RemainingTime.Subtract(TimeSpan.FromSeconds(1)));
+            .Subscribe(
+                _ => RemainingTime = RemainingTime.Subtract(TimeSpan.FromSeconds(1)), 
+                async _ => await FinishGame(false));
     }
 
     private void CreateBoard()
@@ -116,8 +119,8 @@ public class GameViewModel : BaseViewModel, IQueryAttributable
             usedImages.Add(imageIndex);
 
             Random random = new Random();
-            FillBoardCell(tmpBoard, RowCount, ColumnCount, 0, $"{imagePath}{imageIndex}.jpg");
-            FillBoardCell(tmpBoard, RowCount, ColumnCount, random.Next(RowCount * ColumnCount), $"{imagePath}{imageIndex}.jpg");
+            FillBoardCell(tmpBoard, 0, $"{imagePath}{imageIndex}.jpg");
+            FillBoardCell(tmpBoard, random.Next(RowCount * ColumnCount), $"{imagePath}{imageIndex}.jpg");
 
             numberOfFilledCards++;
         }
@@ -154,23 +157,23 @@ public class GameViewModel : BaseViewModel, IQueryAttributable
         throw new InvalidOperationException();
     }
 
-    private void FillBoardCell(Card[,] tmpBoard, int rowLenght, int columnLenght, int index, string imagePath)
+    private void FillBoardCell(Card[,] tmpBoard, int index, string imagePath)
     {
-        if (FillHigherBoardCell(tmpBoard, rowLenght, columnLenght, index, imagePath))
+        if (FillHigherBoardCell(tmpBoard, index, imagePath))
             return;
 
-        if (FillLowerBoardCell(tmpBoard, rowLenght, columnLenght, index, imagePath))
+        if (FillLowerBoardCell(tmpBoard, index, imagePath))
             return;
 
         throw new InvalidOperationException();
     }
 
-    private bool FillHigherBoardCell(Card[,] tmpBoard, int rowLenght, int columnLenght, int index, string imagePath)
+    private bool FillHigherBoardCell(Card[,] tmpBoard, int index, string imagePath)
     {
         int target = 0;
-        for (int row = 0; row < rowLenght; row++)
+        for (int row = 0; row < RowCount; row++)
         {
-            for (int column = 0; column < columnLenght; column++)
+            for (int column = 0; column < ColumnCount; column++)
             {
                 if (target >= index && tmpBoard[row, column] == null)
                 {
@@ -184,12 +187,12 @@ public class GameViewModel : BaseViewModel, IQueryAttributable
         return false;
     }
 
-    private bool FillLowerBoardCell(Card[,] tmpBoard, int rowLenght, int columnLenght, int index, string imagePath)
+    private bool FillLowerBoardCell(Card[,] tmpBoard, int index, string imagePath)
     {
         int target = 0;
-        for (int row = rowLenght - 1; row >= 0; row--)
+        for (int row = RowCount - 1; row >= 0; row--)
         {
-            for (int column = columnLenght - 1; column >= 0; column--)
+            for (int column = ColumnCount - 1; column >= 0; column--)
             {
                 if (target <= index && tmpBoard[row, column] == null)
                 {
@@ -203,7 +206,7 @@ public class GameViewModel : BaseViewModel, IQueryAttributable
         return false;
     }
 
-    private bool EqualsCards(Tuple<Card, Card> cards)
+    private async Task<bool> EqualsCards(Tuple<Card, Card> cards)
     {
         AttempsNumber++;
         if (cards.Item1.ImagePath != cards.Item2.ImagePath)
@@ -213,6 +216,18 @@ public class GameViewModel : BaseViewModel, IQueryAttributable
         cards.Item2.Fount = true;
         CardPairsFount++;
 
+        if (CardPairsFount == RowCount * ColumnCount / 2)
+            await FinishGame(true);
+
         return true;
+    }
+
+    private async Task FinishGame(bool gameWon)
+    {
+        GameWon = gameWon;
+        GameOver = true;
+        timer?.Dispose();
+        timer = null;
+        await navigationService.NavigateBackToGameOver(GameWon);
     }
 }

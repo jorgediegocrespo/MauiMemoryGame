@@ -1,7 +1,16 @@
-﻿namespace MauiMemoryGame.Services;
+﻿using CommunityToolkit.Maui.Views;
+
+namespace MauiMemoryGame.Services;
 
 public class NavigationService : INavigationService
 {
+    private readonly IServiceProvider serviceProvider;
+
+    public NavigationService(IServiceProvider serviceProvider)
+    {
+        this.serviceProvider = serviceProvider;
+    }
+
     public Task NavigateToLevelSelection(Themes selectedTheme)
     {
         var navigationParameter = new Dictionary<string, object>
@@ -21,6 +30,13 @@ public class NavigationService : INavigationService
         };
 
         return Shell.Current.GoToAsync(nameof(GameView), navigationParameter);
+    }
+
+    public Task NavigateBackToGameOver(bool gameWon)
+    {
+        GameOverView gameOverPopup = serviceProvider.GetService<GameOverView>();
+        Shell.Current.ShowPopup(gameOverPopup);
+        return Task.CompletedTask;
     }
 
     public Task NavigateBack()

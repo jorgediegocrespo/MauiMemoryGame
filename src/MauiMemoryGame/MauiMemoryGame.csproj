@@ -75,14 +75,18 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="ReactiveUI.Fody" Version="18.1.8" />
-	  <PackageReference Include="ReactiveUI.Maui" Version="18.1.8" />
+	  <PackageReference Include="CommunityToolkit.Maui" Version="1.2.0" />
+	  <PackageReference Include="ReactiveUI.Fody" Version="18.3.1" />
+	  <PackageReference Include="ReactiveUI.Maui" Version="18.3.1" />
 	  <PackageReference Include="SkiaSharp.Views.Maui.Controls" Version="2.88.1-preview.71" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="Features\DifficultySelector\LevelSelectorView.xaml.cs">
+	  <Compile Update="Features\LevelSelector\LevelSelectorView.xaml.cs">
 	    <DependentUpon>LevelSelectorView.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Features\Gameover\GameOverView.xaml.cs">
+	    <DependentUpon>GameOverView.xaml</DependentUpon>
 	  </Compile>
 	  <Compile Update="Features\ThemeSelector\ThemeSelectorView.xaml.cs">
 	    <DependentUpon>ThemeSelectorView.xaml</DependentUpon>
@@ -102,15 +106,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Controls\" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <MauiXaml Update="AppShell.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Features\DifficultySelector\LevelSelectorView.xaml">
+	  <MauiXaml Update="Features\LevelSelector\LevelSelectorView.xaml">
 	    <Generator></Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Features\Gameover\GameOverView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Features\Game\CardView.xaml">
 	    <Generator>MSBuild:Compile</Generator>

@@ -4,6 +4,7 @@ public partial class CardView
 {
     
 	public static readonly BindableProperty CardProperty = BindableProperty.Create(nameof(Card), typeof(Card), typeof(CardView), defaultBindingMode: BindingMode.OneWay, propertyChanged: CardChanged);
+    public bool IsShowingContent => frContent.IsVisible == true;
 
     public CardView()
 	{

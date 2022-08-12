@@ -4,12 +4,25 @@
                       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                       xmlns:features="clr-namespace:MauiMemoryGame.Features"
                       xmlns:texts="clr-namespace:MauiMemoryGame.Resources.Texts"
+                      xmlns:controls="clr-namespace:MauiMemoryGame.Controls"
                       x:Class="MauiMemoryGame.Features.GameView"
                       x:DataType="features:GameViewModel" 
                       x:TypeArguments="features:GameViewModel"
                       Shell.NavBarIsVisible="False">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Label">
+                <Setter Property="MaxLines" Value="1" />
+                <Setter Property="LineBreakMode" Value="TailTruncation" />
+                <Setter Property="HorizontalTextAlignment" Value="Center" />
+                <Setter Property="VerticalTextAlignment" Value="Center" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
     
-    <Grid Padding="10" RowDefinitions="50,50,*" ColumnDefinitions="2*,*">
+    
+    <Grid Padding="10" RowDefinitions="75,*" ColumnDefinitions="*,*,*" 
+          RowSpacing="10" ColumnSpacing="10">
         <Grid.Background>
             <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                 <GradientStop Color="{AppThemeBinding Light={StaticResource BackgroundOneLight}, Dark={StaticResource BackgroundOneDark}}" Offset="0.1" />
@@ -17,25 +30,50 @@
             </LinearGradientBrush>
         </Grid.Background>
 
-        <Label x:Name="lbPairs" Grid.Row="0" Grid.Column="0"
-               MaxLines="1" LineBreakMode="TailTruncation"
-               HorizontalTextAlignment="Start" VerticalTextAlignment="End"
-               HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
-               IsVisible="False" />
+        <Frame x:Name="frPairs" Grid.Row="0" Grid.Column="0"
+               CornerRadius="10" 
+               BorderColor="{AppThemeBinding Light={StaticResource CardBackgroundColorLight}, Dark={StaticResource CardBackgroundColorDark}}"
+               BackgroundColor="{AppThemeBinding Light={StaticResource CardBorderColorLight}, Dark={StaticResource CardBorderColorDark}}"
+               IsVisible="False" Padding="0,10"
+               HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <Grid RowDefinitions="*,20">
+                <Label x:Name="lbPairs" 
+                       TextColor="{AppThemeBinding Light={StaticResource SecondaryColorLight}, Dark={StaticResource SecondaryColorDark}}"
+                       FontSize="Large"/>
+                <Label Text="Parejas" Grid.Row="1" FontSize="Small"/>
+            </Grid>
+        </Frame>
 
-        <Label x:Name="lbAttemps" Grid.Row="1" Grid.Column="0"
-               MaxLines="1" LineBreakMode="TailTruncation"
-               HorizontalTextAlignment="Start" VerticalTextAlignment="Start"
-               HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
-               IsVisible="False" />
+        <Frame x:Name="frAttemps" Grid.Row="0" Grid.Column="1"
+               CornerRadius="10"
+               BorderColor="{AppThemeBinding Light={StaticResource CardBackgroundColorLight}, Dark={StaticResource CardBackgroundColorDark}}"
+               BackgroundColor="{AppThemeBinding Light={StaticResource CardBorderColorLight}, Dark={StaticResource CardBorderColorDark}}"
+               IsVisible="False" Padding="0,10"
+               HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <Grid RowDefinitions="*,20">
+                <Label x:Name="lbAttemps" 
+                       TextColor="{AppThemeBinding Light={StaticResource RertiaryColorLight}, Dark={StaticResource RertiaryColorDark}}"
+                       FontSize="Large"/>
+                <Label Text="Intentos" Grid.Row="1" FontSize="Small"/>
+            </Grid>
+        </Frame>
 
-        <Label x:Name="lbTimer" Grid.RowSpan="2" Grid.Column="1"
-               MaxLines="1" LineBreakMode="TailTruncation"
-               HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
-               HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
-               IsVisible="False" />
+        <Frame x:Name="frTimer" Grid.Row="0" Grid.Column="2"
+               CornerRadius="10"
+               BorderColor="{AppThemeBinding Light={StaticResource CardBackgroundColorLight}, Dark={StaticResource CardBackgroundColorDark}}"
+               BackgroundColor="{AppThemeBinding Light={StaticResource CardBorderColorLight}, Dark={StaticResource CardBorderColorDark}}"
+               IsVisible="False" Padding="5"
+               HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <Grid >
+                <Label x:Name="lbTimer" FontSize="Micro"/>
+                <controls:CircleProgressBar x:Name="timeProgress"
+                                            ProgressPercentage="30" 
+                                            ProgressBarColor="{AppThemeBinding Light={StaticResource ChartColorLight}, Dark={StaticResource ChartColorDark}}"
+                                            HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
+            </Grid>
+        </Frame>
 
-        <Grid x:Name="gridBoard" Grid.Row="2" Grid.ColumnSpan="2"
+        <Grid x:Name="gridBoard" Grid.Row="1" Grid.ColumnSpan="3"
               RowSpacing="5" ColumnSpacing="5" 
               IsVisible="false"/>
 

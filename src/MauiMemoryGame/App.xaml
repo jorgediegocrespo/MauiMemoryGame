@@ -7,20 +7,26 @@
 
             <Color x:Key="BackgroundOneLight">#FFFFFF</Color>
             <Color x:Key="BackgroundTwoLight">#FFADD8E6</Color>
-            <Color x:Key="ButtonColorLight">#FF00008B</Color>
+            <Color x:Key="ButtonColorLight">#4C4CAD</Color>
             <Color x:Key="ButtonTextColorLight">#FFFFFF</Color>
-            <Color x:Key="CardBackgroundColorLight">#FF00008B</Color>
+            <Color x:Key="CardBackgroundColorLight">#4C4CAD</Color>
             <Color x:Key="CardBorderColorLight">#FFFFFF</Color>
+            <Color x:Key="TitleColorLight">#000000</Color>
+            <Color x:Key="SecondaryColorLight">#ad4c4c</Color>
+            <Color x:Key="RertiaryColorLight">#4cad4c</Color>
+            <Color x:Key="ChartColorLight">#4C4CAD</Color>
+            
 
             <Color x:Key="BackgroundOneDark">#FFFFFF</Color>
             <Color x:Key="BackgroundTwoDark">#FFADD8E6</Color>
-            <Color x:Key="ButtonColorDark">#FF00008B</Color>
+            <Color x:Key="ButtonColorDark">#4C4CAD</Color>
             <Color x:Key="ButtonTextColorDark">#FFFFFF</Color>
-            <Color x:Key="CardBackgroundColorDark">#FF00008B</Color>
+            <Color x:Key="CardBackgroundColorDark">#4C4CAD</Color>
             <Color x:Key="CardBorderColorDark">#FFFFFF</Color>
-
             <Color x:Key="TitleColorDark">#FFFFFF</Color>
-            <Color x:Key="TitleColorLight">#000000</Color>
+            <Color x:Key="SecondaryColorDark">#ad4c4c</Color>
+            <Color x:Key="RertiaryColorDark">#4cad4c</Color>
+            <Color x:Key="ChartColorDark">#4C4CAD</Color>
 
             <Style x:Key="lbTitle" TargetType="Label">
                 <Setter Property="FontSize" Value="Title" />
