@@ -117,8 +117,38 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="GameAttemps" xml:space="preserve">
+    <value>Attemps</value>
+  </data>
+  <data name="GameLoseSubtitle" xml:space="preserve">
+    <value>Time is up and you haven't managed to discover all the pairs</value>
+  </data>
+  <data name="GameLoseTitle" xml:space="preserve">
+    <value>Game over!!</value>
+  </data>
+  <data name="GamePairs" xml:space="preserve">
+    <value>Pairs</value>
+  </data>
+  <data name="GameWonSubtitle" xml:space="preserve">
+    <value>You have discovered all the pairs before the time runs out</value>
+  </data>
+  <data name="GameWonTitle" xml:space="preserve">
+    <value>Congratulations!!</value>
+  </data>
+  <data name="HighLevel" xml:space="preserve">
+    <value>High</value>
+  </data>
   <data name="LevelSelectorTitle" xml:space="preserve">
     <value>Select the level of difficulty with which you want to play</value>
+  </data>
+  <data name="LowLevel" xml:space="preserve">
+    <value>Low</value>
+  </data>
+  <data name="MediumLevel" xml:space="preserve">
+    <value>Medium</value>
+  </data>
+  <data name="PlayAgain" xml:space="preserve">
+    <value>Play again</value>
   </data>
   <data name="ThemeSelectorTitle" xml:space="preserve">
     <value>Select the theme you want to play with</value>

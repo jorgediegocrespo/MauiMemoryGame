@@ -61,11 +61,101 @@ namespace MauiMemoryGame.Resources.Texts {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Attemps.
+        /// </summary>
+        public static string GameAttemps {
+            get {
+                return ResourceManager.GetString("GameAttemps", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Time is up and you haven&apos;t managed to discover all the pairs.
+        /// </summary>
+        public static string GameLoseSubtitle {
+            get {
+                return ResourceManager.GetString("GameLoseSubtitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Game over!!.
+        /// </summary>
+        public static string GameLoseTitle {
+            get {
+                return ResourceManager.GetString("GameLoseTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pairs.
+        /// </summary>
+        public static string GamePairs {
+            get {
+                return ResourceManager.GetString("GamePairs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You have discovered all the pairs before the time runs out.
+        /// </summary>
+        public static string GameWonSubtitle {
+            get {
+                return ResourceManager.GetString("GameWonSubtitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Congratulations!!.
+        /// </summary>
+        public static string GameWonTitle {
+            get {
+                return ResourceManager.GetString("GameWonTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to High.
+        /// </summary>
+        public static string HighLevel {
+            get {
+                return ResourceManager.GetString("HighLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select the level of difficulty with which you want to play.
         /// </summary>
         public static string LevelSelectorTitle {
             get {
                 return ResourceManager.GetString("LevelSelectorTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Low.
+        /// </summary>
+        public static string LowLevel {
+            get {
+                return ResourceManager.GetString("LowLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Medium.
+        /// </summary>
+        public static string MediumLevel {
+            get {
+                return ResourceManager.GetString("MediumLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Play again.
+        /// </summary>
+        public static string PlayAgain {
+            get {
+                return ResourceManager.GetString("PlayAgain", resourceCulture);
             }
         }
         

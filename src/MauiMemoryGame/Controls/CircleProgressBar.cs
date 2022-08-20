@@ -11,7 +11,7 @@ public class CircleProgressBar : SKCanvasView
     public static readonly BindableProperty LineBackgroundColorProperty = BindableProperty.Create(nameof(LineBackgroundColor), typeof(Color), typeof(CircleProgressBar), Colors.Gray, propertyChanged: OnPropertyChanged);
     public static readonly BindableProperty ProgressPercentageProperty = BindableProperty.Create(nameof(ProgressPercentage), typeof(float), typeof(CircleProgressBar), 0f, propertyChanged: OnPropertyChanged);
     public static readonly BindableProperty ProgressBarColorProperty = BindableProperty.Create(nameof(ProgressBarColor), typeof(Color), typeof(CircleProgressBar), Colors.Red, propertyChanged: OnPropertyChanged);
-    
+
     public float StrokeWidth
     {
         get { return (float)GetValue(StrokeWidthProperty); }

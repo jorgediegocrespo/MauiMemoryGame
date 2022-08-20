@@ -12,7 +12,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 
 		<!-- Display name -->
-		<ApplicationTitle>MauiMemoryGame</ApplicationTitle>
+		<ApplicationTitle>Maui Memory</ApplicationTitle>
 
 		<!-- App Identifier -->
 		<ApplicationId>com.companyname.mauimemorygame</ApplicationId>
@@ -32,10 +32,10 @@
 
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#3376A8" />
+		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#4C4CAD" />
 
 		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#3376A8" />
+		<MauiSplashScreen Include="Resources\Splash\memorygame.svg" Color="#4C4CAD" BaseSize="128,128" />
 		
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
@@ -46,7 +46,7 @@
 		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
 	</ItemGroup>
-
+	
 	<ItemGroup>
 	  <None Remove="Resources\Images\dc_1.jpg" />
 	  <None Remove="Resources\Images\dc_10.jpg" />
@@ -64,12 +64,58 @@
 	  <None Remove="Resources\Images\dc_8.jpg" />
 	  <None Remove="Resources\Images\dc_9.jpg" />
 	  <None Remove="Resources\Images\dc_logo.png" />
+	  <None Remove="Resources\Images\marvel_1.jpg" />
+	  <None Remove="Resources\Images\marvel_10.jpg" />
+	  <None Remove="Resources\Images\marvel_11.jpg" />
+	  <None Remove="Resources\Images\marvel_12.jpg" />
+	  <None Remove="Resources\Images\marvel_13.jpg" />
+	  <None Remove="Resources\Images\marvel_14.jpg" />
+	  <None Remove="Resources\Images\marvel_15.jpg" />
+	  <None Remove="Resources\Images\marvel_2.jpg" />
+	  <None Remove="Resources\Images\marvel_3.jpg" />
+	  <None Remove="Resources\Images\marvel_4.jpg" />
+	  <None Remove="Resources\Images\marvel_5.jpg" />
+	  <None Remove="Resources\Images\marvel_6.jpg" />
+	  <None Remove="Resources\Images\marvel_7.jpg" />
+	  <None Remove="Resources\Images\marvel_8.jpg" />
+	  <None Remove="Resources\Images\marvel_9.jpg" />
 	  <None Remove="Resources\Images\marvel_logo.png" />
+	  <None Remove="Resources\Images\simpsons_1.jpg" />
+	  <None Remove="Resources\Images\simpsons_10.jpg" />
+	  <None Remove="Resources\Images\simpsons_11.jpg" />
+	  <None Remove="Resources\Images\simpsons_12.jpg" />
+	  <None Remove="Resources\Images\simpsons_13.jpg" />
+	  <None Remove="Resources\Images\simpsons_14.jpg" />
+	  <None Remove="Resources\Images\simpsons_15.jpg" />
+	  <None Remove="Resources\Images\simpsons_2.jpg" />
+	  <None Remove="Resources\Images\simpsons_3.jpg" />
+	  <None Remove="Resources\Images\simpsons_4.jpg" />
+	  <None Remove="Resources\Images\simpsons_5.jpg" />
+	  <None Remove="Resources\Images\simpsons_6.jpg" />
+	  <None Remove="Resources\Images\simpsons_7.jpg" />
+	  <None Remove="Resources\Images\simpsons_8.jpg" />
+	  <None Remove="Resources\Images\simpsons_9.jpg" />
 	  <None Remove="Resources\Images\simpsons_logo.png" />
+	  <None Remove="Resources\Images\star_wars_1.jpg" />
+	  <None Remove="Resources\Images\star_wars_10.jpg" />
+	  <None Remove="Resources\Images\star_wars_11.jpg" />
+	  <None Remove="Resources\Images\star_wars_12.jpg" />
+	  <None Remove="Resources\Images\star_wars_13.jpg" />
+	  <None Remove="Resources\Images\star_wars_14.jpg" />
+	  <None Remove="Resources\Images\star_wars_15.jpg" />
+	  <None Remove="Resources\Images\star_wars_2.jpg" />
+	  <None Remove="Resources\Images\star_wars_3.jpg" />
+	  <None Remove="Resources\Images\star_wars_4.jpg" />
+	  <None Remove="Resources\Images\star_wars_5.jpg" />
+	  <None Remove="Resources\Images\star_wars_6.jpg" />
+	  <None Remove="Resources\Images\star_wars_7.jpg" />
+	  <None Remove="Resources\Images\star_wars_8.jpg" />
+	  <None Remove="Resources\Images\star_wars_9.jpg" />
 	  <None Remove="Resources\Images\star_wars_logo.png" />
+	  <None Remove="Resources\Raw\lose.json" />
+	  <None Remove="Resources\Raw\win.json" />
 	</ItemGroup>
-
-
+	
 	<ItemGroup>
 	  <None Include="..\.editorconfig" Link=".editorconfig" />
 	</ItemGroup>
@@ -78,7 +124,8 @@
 	  <PackageReference Include="CommunityToolkit.Maui" Version="1.2.0" />
 	  <PackageReference Include="ReactiveUI.Fody" Version="18.3.1" />
 	  <PackageReference Include="ReactiveUI.Maui" Version="18.3.1" />
-	  <PackageReference Include="SkiaSharp.Views.Maui.Controls" Version="2.88.1-preview.71" />
+	  <PackageReference Include="SkiaSharp.Extended.UI.Maui" Version="2.0.0-preview.59" />
+	  <PackageReference Include="SkiaSharp.Views.Maui.Controls" Version="2.88.1-preview.108" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -107,6 +154,9 @@
 
 	<ItemGroup>
 	  <MauiXaml Update="AppShell.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Controls\RoundedButton.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Features\LevelSelector\LevelSelectorView.xaml">

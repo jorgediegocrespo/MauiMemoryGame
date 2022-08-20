@@ -32,11 +32,12 @@ public class NavigationService : INavigationService
         return Shell.Current.GoToAsync(nameof(GameView), navigationParameter);
     }
 
-    public Task NavigateBackToGameOver(bool gameWon)
+    public async Task<bool> NavigateBackToGameOver(bool isWinner)
     {
-        GameOverView gameOverPopup = serviceProvider.GetService<GameOverView>();
-        Shell.Current.ShowPopup(gameOverPopup);
-        return Task.CompletedTask;
+        GameOverView gameOverPopup = new GameOverView(isWinner);
+        object result = await Shell.Current.ShowPopupAsync(gameOverPopup);
+
+        return (bool)result;
     }
 
     public Task NavigateBack()
@@ -46,6 +47,6 @@ public class NavigationService : INavigationService
 
     public Task NavigateBackToStart()
     {
-        return Shell.Current.GoToAsync("../themeselector");
+        return Shell.Current.GoToAsync("../../..");
     }
 }

@@ -12,6 +12,7 @@ public partial class LevelSelectorView
     {
         base.CreateBindings(disposables);
 
+        disposables.Add(this.OneWayBind(ViewModel, vm => vm.NavigateBackCommand, v => v.btBack.Command));
         disposables.Add(this.BindCommand(ViewModel, vm => vm.SelectHighCommand, v => v.btHigh));
         disposables.Add(this.BindCommand(ViewModel, vm => vm.SelectMediumCommand, v => v.btMedium));
         disposables.Add(this.BindCommand(ViewModel, vm => vm.SelectLowCommand, v => v.btEasy));

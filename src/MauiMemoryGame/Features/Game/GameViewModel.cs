@@ -23,23 +23,24 @@ public class GameViewModel : BaseViewModel, IQueryAttributable
     [Reactive] public int AttempsNumber { get; set; }
     [Reactive] public int CardPairsFount { get; set; }
     [Reactive] public TimeSpan RemainingTime { get; set; }
+
     public TimeSpan TotalTime => SelectedLevel switch
     {
-        Level.Low => TimeSpan.FromSeconds(20), //TODO Change TimeSpan.FromMinutes(5),
+        Level.Low => TimeSpan.FromMinutes(5),
         Level.Medium => TimeSpan.FromMinutes(4),
         Level.High => TimeSpan.FromMinutes(2),
         _ => throw new InvalidOperationException()
     };
     public int RowCount => SelectedLevel switch
     {
-        Level.Low => 2, //TODO Change 4,
+        Level.Low => 4,
         Level.Medium => 6,
         Level.High => 6,
         _ => throw new InvalidOperationException()
     };
     public int ColumnCount => SelectedLevel switch
     {
-        Level.Low => 2, //TODO Change 4,
+        Level.Low => 4,
         Level.Medium => 4,
         Level.High => 5,
         _ => throw new InvalidOperationException()
@@ -81,7 +82,16 @@ public class GameViewModel : BaseViewModel, IQueryAttributable
     private void InitGame()
     {
         CreateBoard();
+        InitValues();
         InitTimer();
+    }
+
+    private void InitValues()
+    {
+        GameOver = false;
+        GameWon = false;
+        AttempsNumber = 0;
+        CardPairsFount = 0;
     }
 
     private void InitTimer()
@@ -92,8 +102,12 @@ public class GameViewModel : BaseViewModel, IQueryAttributable
             .TakeWhile(_ => RemainingTime > TimeSpan.Zero)
             .ObserveOn(RxApp.MainThreadScheduler)
             .Subscribe(
-                _ => RemainingTime = RemainingTime.Subtract(TimeSpan.FromSeconds(1)), 
-                async _ => await FinishGame(false));
+                async _ =>
+                {
+                    RemainingTime = RemainingTime.Subtract(TimeSpan.FromSeconds(1));
+                    if (RemainingTime.TotalSeconds == 0)
+                        await FinishGame(false);
+                });
     }
 
     private void CreateBoard()
@@ -226,8 +240,14 @@ public class GameViewModel : BaseViewModel, IQueryAttributable
     {
         GameWon = gameWon;
         GameOver = true;
+
         timer?.Dispose();
         timer = null;
-        await navigationService.NavigateBackToGameOver(GameWon);
+
+        bool playAgain = await navigationService.NavigateBackToGameOver(GameWon);
+        if (playAgain)
+            InitGameCommand.Execute().Subscribe();
+        else
+            await navigationService.NavigateBackToStart();
     }
 }

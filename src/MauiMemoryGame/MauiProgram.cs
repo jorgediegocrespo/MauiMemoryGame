@@ -16,6 +16,7 @@ public static class MauiProgram
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                fonts.AddFont("MaterialIcons-Regular.ttf", "MaterialIcons");
             })
             .Services.RegisterServices()
             .RegisterViewsAndViewModels();
@@ -35,7 +36,6 @@ public static class MauiProgram
         return services
             .AddTransient<ThemeSelectorViewModel>().AddTransient<ThemeSelectorView>()
             .AddTransient<LevelSelectorViewModel>().AddTransient<LevelSelectorView>()
-            .AddTransient<GameViewModel>().AddTransient<GameView>()
-            .AddTransient<GameOverView>();
+            .AddTransient<GameViewModel>().AddTransient<GameView>();
     }
 }

@@ -3,8 +3,10 @@ namespace MauiMemoryGame.Features;
 public partial class GameView
 {
 	private CardView firstPairCard;
+	private bool isManagingCards;
 
-	public GameView(GameViewModel viewModel)
+
+    public GameView(GameViewModel viewModel)
 	{
         ViewModel = viewModel;
 		IsDrawingBoard = false;
@@ -16,9 +18,11 @@ public partial class GameView
 	protected override void CreateBindings(CompositeDisposable disposables)
 	{
 		base.CreateBindings(disposables);
+
+        disposables.Add(this.OneWayBind(ViewModel, vm => vm.NavigateBackCommand, v => v.btBack.Command));
         disposables.Add(this.OneWayBind(ViewModel, vm => vm.AttempsNumber, v => v.lbAttemps.Text)); 
         disposables.Add(this.OneWayBind(ViewModel, vm => vm.CardPairsFount, v => v.lbPairs.Text)); 
-        disposables.Add(this.OneWayBind(ViewModel, vm => vm.RemainingTime, v => v.lbTimer.Text, x => $"{x.Minutes}:{x.Seconds}"));
+        disposables.Add(this.OneWayBind(ViewModel, vm => vm.RemainingTime, v => v.lbTimer.Text, x => $"{x.Minutes.ToString().PadLeft(2, '0')}:{x.Seconds.ToString().PadLeft(2, '0')}"));
         disposables.Add(this.OneWayBind(ViewModel, vm => vm.RemainingTime, v => v.timeProgress.ProgressPercentage, x => GetTimePercentage(x)));
     }
 
@@ -80,12 +84,18 @@ public partial class GameView
 
 	private void CreateGridBoard()
 	{
+		ClearGrid();
 		CreateGridBoardRows();
 		CreateGridBoardColumns();
-
     }
 
-    private void CreateGridBoardRows()
+	private void ClearGrid()
+	{
+		gridBoard.RowDefinitions.Clear();
+		gridBoard.ColumnDefinitions.Clear();
+	}
+
+	private void CreateGridBoardRows()
     {
 		for (int row = 0; row < ViewModel.RowCount; row++)
 			gridBoard.RowDefinitions.Add(new RowDefinition(new GridLength(1, GridUnitType.Star)));
@@ -97,8 +107,11 @@ public partial class GameView
             gridBoard.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(1, GridUnitType.Star)));
     }
 
-    private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
+    private async void TapGestureRecognizer_Tapped(object sender, EventArgs e)
 	{
+		if (isManagingCards)
+			return;
+
 		CardView selectedCard = (CardView)sender;
 		if (selectedCard.IsShowingContent)
 			return;
@@ -106,31 +119,39 @@ public partial class GameView
         if (firstPairCard == selectedCard)
             return;
 
-        _ = selectedCard.ShowContent();
+		isManagingCards = true;
+        await selectedCard.ShowContent();
         if (firstPairCard == null)
 		{
 			firstPairCard = selectedCard;
-			return;
+            isManagingCards = false;
+            return;
 		}		
 
 		ViewModel.EqualsCardsCommand
 			.Execute(new Tuple<Card, Card>(firstPairCard.Card, selectedCard.Card))
-			.Subscribe(async equals =>
+			.Subscribe(async areEquals =>
 			{
-				if (equals)
-				{
-                    firstPairCard = null;
-                    return;
-                }	
-
-				await Task.Delay(2000);
-				await Task.WhenAll(
-					selectedCard.HideContent(),
-					firstPairCard.HideContent());
-
-				firstPairCard = null;
-			});
+				await ManageCardEqualsResult(areEquals, selectedCard);
+                isManagingCards = false;
+            });
 	}
+
+	private async Task ManageCardEqualsResult(bool areEquals, CardView secondPairCard)
+	{
+        if (areEquals)
+        {
+            firstPairCard = null;
+            return;
+        }
+
+        await Task.Delay(2000);
+        await Task.WhenAll(
+            secondPairCard.HideContent(),
+            firstPairCard.HideContent());
+
+        firstPairCard = null;
+    }
 
 	private void ManageBoardVisibility(bool isBuildingBoard)
 	{

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiMemoryGame.Controls.RoundedButton">
+    
+    <Border Stroke="{AppThemeBinding Light={StaticResource ButtonColorLight}, Dark={StaticResource ButtonColorDark}}"
+                StrokeThickness="4"
+                StrokeShape="RoundRectangle 20,20,20,20"
+                Background="Transparent"
+                Margin="5" HeightRequest="40" WidthRequest="40"
+                HorizontalOptions="Start" VerticalOptions="Start">
+        <ImageButton x:Name="button" 
+                         BackgroundColor="Transparent"
+                         HeightRequest="25" WidthRequest="25" 
+                         HorizontalOptions="Center" VerticalOptions="Center">
+            <ImageButton.Source>
+                <FontImageSource x:Name="buttonSource" 
+                                 FontFamily="{OnPlatform iOS=MaterialIcons-Regular, Android=MaterialIcons-Regular.ttf#}"
+                                 Color="{AppThemeBinding Light={StaticResource ButtonColorLight}, Dark={StaticResource ButtonColorDark}}"/>
+
+            </ImageButton.Source>
+        </ImageButton>
+    </Border>
+</ContentView>

@@ -9,22 +9,10 @@
                       x:DataType="features:LevelSelectorViewModel" 
                       x:TypeArguments="features:LevelSelectorViewModel"
                       Shell.NavBarIsVisible="False">
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <Style TargetType="Button">
-                <Setter Property="CornerRadius" Value="20" />
-                <Setter Property="HeightRequest" Value="40" />
-                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
-                <Setter Property="VerticalOptions" Value="Center" />
-                <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource ButtonColorLight}, Dark={StaticResource ButtonColorDark}}" />
-                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource ButtonColorLight}, Dark={StaticResource ButtonColorDark}}" />
-                <Setter Property="BorderWidth" Value="2" />
-                <Setter Property="BackgroundColor" Value="Transparent" />
-            </Style>
-        </ResourceDictionary>
-    </ContentPage.Resources>
-
-    <Grid RowDefinitions="*,50,50,50,*" ColumnDefinitions="*,150,*" RowSpacing="10" ColumnSpacing="5">
+    
+    <Grid RowDefinitions="50,*,50,50,50,*,50" ColumnDefinitions="*,150,*" 
+          RowSpacing="0" ColumnSpacing="10"
+          Margin="0,0,0,-50" Padding="10,0">
         <Grid.Background>
             <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                 <GradientStop Color="{AppThemeBinding Light={StaticResource BackgroundOneLight}, Dark={StaticResource BackgroundOneDark}}" Offset="0.1" />
@@ -32,14 +20,18 @@
             </LinearGradientBrush>
         </Grid.Background>
 
-        <Label Grid.ColumnSpan="3" Style="{StaticResource lbTitle}"
+        <controls:RoundedButton x:Name="btBack" ButtonType="Back" Margin="-10,0"
+                                HorizontalOptions="Start" VerticalOptions="Start" />
+        
+
+        <Label Grid.Row="1" Grid.ColumnSpan="3" Style="{StaticResource lbTitle}"
                Text="{x:Static texts:TextsResource.LevelSelectorTitle}" 
                Margin="20"
                HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand" />
-        
-        <Button x:Name="btEasy" Grid.Row="1" Grid.Column="1" Text="Fácil" />
-        <Button x:Name="btMedium" Grid.Row="2" Grid.Column="1" Text="Medio" />
-        <Button x:Name="btHigh" Grid.Row="3" Grid.Column="1" Text="Dificil" />
+
+        <Button x:Name="btEasy" Grid.Row="2" Grid.Column="1" Text="{x:Static texts:TextsResource.LowLevel}" />
+        <Button x:Name="btMedium" Grid.Row="3" Grid.Column="1" Text="{x:Static texts:TextsResource.MediumLevel}" />
+        <Button x:Name="btHigh" Grid.Row="4" Grid.Column="1" Text="{x:Static texts:TextsResource.HighLevel}" />
 
     </Grid>
 

@@ -2,7 +2,6 @@
 <base:BaseContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
                       xmlns:base="clr-namespace:MauiMemoryGame.Base"
                       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-                      xmlns:viewmodel="clr-namespace:MauiMemoryGame.Features.ThemeSelectorViewModel"
                       xmlns:features="clr-namespace:MauiMemoryGame.Features"
                       xmlns:texts="clr-namespace:MauiMemoryGame.Resources.Texts"                      
                       x:Class="MauiMemoryGame.Features.ThemeSelectorView"
@@ -21,10 +20,18 @@
                 <Setter Property="BorderWidth" Value="2" />
                 <Setter Property="BackgroundColor" Value="Transparent" />
             </Style>
+
+            <Style TargetType="Image">
+                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+                <Setter Property="VerticalOptions" Value="FillAndExpand" />
+                <Setter Property="Aspect" Value="AspectFill" />
+            </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <Grid RowDefinitions="*,50,50,*" ColumnDefinitions="*,150,150,*" RowSpacing="10" ColumnSpacing="5">
+    <Grid RowDefinitions="50,*,*,*,50" ColumnDefinitions="10,*,*,10" 
+          RowSpacing="0" ColumnSpacing="5" 
+          Margin="0,0,0,-50">
         <Grid.Background>
             <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                 <GradientStop Color="{AppThemeBinding Light={StaticResource BackgroundOneLight}, Dark={StaticResource BackgroundOneDark}}" Offset="0.1" />
@@ -32,15 +39,32 @@
             </LinearGradientBrush>
         </Grid.Background>
 
-        <Label Grid.ColumnSpan="4" Style="{StaticResource lbTitle}"
+        <Label Grid.Row="1" Grid.ColumnSpan="4" Style="{StaticResource lbTitle}"
                Text="{x:Static texts:TextsResource.ThemeSelectorTitle}" 
                Margin="20" 
                HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand"  />
+
+
+        <Border Grid.Row="2" Grid.Column="1" Stroke="#C49B33"
+                StrokeThickness="4"
+                Background="#2B0B98"
+                Padding="16,8"
+                HorizontalOptions="Center"> 
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="20,0,20,20" />
+            </Border.StrokeShape>
+            <Grid ColumnDefinitions="*,*">
+                <Image Source="marvel_logo.jpg" Aspect="AspectFill" Grid.ColumnSpan="2"/>
+                <Button x:Name="btDc" 
+                        Text="DC" Grid.Column="1"
+                        HorizontalOptions="FillAndExpand" VerticalOptions="End"/>
+            </Grid>            
+        </Border>
         
-        <ImageButton x:Name="btDc" Grid.Row="1" Grid.Column="1" Source="dc_logo.png" />
-        <ImageButton x:Name="btMarvel" Grid.Row="1" Grid.Column="2" Source="marvel_logo.png" />
-        <ImageButton x:Name="btSimpson" Grid.Row="2" Grid.Column="1" Source="simpsons_logo.png" />
-        <ImageButton x:Name="btStarWars" Grid.Row="2" Grid.Column="2" Source="star_wars_logo.png" />
+        <ImageButton x:Name="btMarvel" Grid.Row="2" Grid.Column="2" Source="marvel_logo.png" />
+        <ImageButton x:Name="btSimpson" Grid.Row="3" Grid.Column="1" Source="simpsons_logo.png" />
+        <ImageButton x:Name="btStarWars" Grid.Row="3" Grid.Column="2" Source="star_wars_logo.png" />
+
     </Grid>
 
 </base:BaseContentPage>
