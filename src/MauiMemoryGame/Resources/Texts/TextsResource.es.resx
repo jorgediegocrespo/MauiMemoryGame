@@ -153,4 +153,16 @@
   <data name="ThemeSelectorTitle" xml:space="preserve">
     <value>Selecciona el tema con el que deseas jugar</value>
   </data>
+  <data name="ThemeSelectorMarvel" xml:space="preserve">
+    <value>Marvel</value>
+  </data>
+  <data name="ThemeSelectorDc" xml:space="preserve">
+    <value>DC</value>
+  </data>
+  <data name="ThemeSelectorSimpsons" xml:space="preserve">
+    <value>Los Simpsons</value>
+  </data>
+  <data name="ThemeSelectorStarWars" xml:space="preserve">
+    <value>Star Wars</value>
+  </data>
 </root>

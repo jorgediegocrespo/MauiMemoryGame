@@ -10,11 +10,6 @@ public class GameViewModel : BaseViewModel, IQueryAttributable
     {
     }
 
-    ~GameViewModel()
-    {
-        timer?.Dispose();
-    }
-
     [Reactive] public Themes SelectedTheme { get; set; }
     [Reactive] public Level SelectedLevel { get; set; }
     [Reactive] public Card[,] Board { get; set; }
@@ -26,7 +21,7 @@ public class GameViewModel : BaseViewModel, IQueryAttributable
 
     public TimeSpan TotalTime => SelectedLevel switch
     {
-        Level.Low => TimeSpan.FromMinutes(5),
+        Level.Low => TimeSpan.FromSeconds(25), //TODO TimeSpan.FromMinutes(5),
         Level.Medium => TimeSpan.FromMinutes(4),
         Level.High => TimeSpan.FromMinutes(2),
         _ => throw new InvalidOperationException()
@@ -61,6 +56,14 @@ public class GameViewModel : BaseViewModel, IQueryAttributable
 
         disposables.Add(EqualsCardsCommand.ThrownExceptions.Subscribe(logService.TraceError));
         disposables.Add(EqualsCardsCommand.IsExecuting.ToPropertyEx(this, x => x.IsComparingCards));
+
+        InitTimer();
+    }
+
+    public override async Task OnDisappearingAsync()
+    {
+        await base.OnDisappearingAsync();
+        timer = null;
     }
 
     protected override void CreateCommands()
@@ -83,7 +86,6 @@ public class GameViewModel : BaseViewModel, IQueryAttributable
     {
         CreateBoard();
         InitValues();
-        InitTimer();
     }
 
     private void InitValues()
@@ -96,7 +98,10 @@ public class GameViewModel : BaseViewModel, IQueryAttributable
 
     private void InitTimer()
     {
-        RemainingTime = new TimeSpan(TotalTime.Ticks);
+        if (timer != null)
+            return;
+
+        RemainingTime = RemainingTime.TotalSeconds > 0 ? RemainingTime : new TimeSpan(TotalTime.Ticks);
 
         timer = Observable.Interval(TimeSpan.FromSeconds(1))
             .TakeWhile(_ => RemainingTime > TimeSpan.Zero)
@@ -108,6 +113,7 @@ public class GameViewModel : BaseViewModel, IQueryAttributable
                     if (RemainingTime.TotalSeconds == 0)
                         await FinishGame(false);
                 });
+        disposables.Add(timer);
     }
 
     private void CreateBoard()
