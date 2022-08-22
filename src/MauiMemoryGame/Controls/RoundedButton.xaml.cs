@@ -16,7 +16,7 @@ public partial class RoundedButton : ContentView
 		InitializeComponent();
      
         disposables = new CompositeDisposable();
-        CreateBindings();
+        CreateEvents();
         RefreshIcon();
     }
 
@@ -37,7 +37,7 @@ public partial class RoundedButton : ContentView
         set => SetValue(ButtonTypeProperty, value);
     }
 
-    private void CreateBindings()
+    private void CreateEvents()
     {
         IObservable<EventPattern<object>> btCustomClicked = Observable.FromEventPattern(h => button.Clicked += h, h => button.Clicked -= h);
         disposables.Add(btCustomClicked.Subscribe(x => Clicked?.Invoke(this, null)));

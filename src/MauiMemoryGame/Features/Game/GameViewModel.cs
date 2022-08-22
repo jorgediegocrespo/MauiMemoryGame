@@ -4,10 +4,12 @@ namespace MauiMemoryGame.Features;
 
 public class GameViewModel : BaseViewModel, IQueryAttributable
 {
+    private readonly IDialogService dialogService;
     private IDisposable timer;
 
-    public GameViewModel(ILogService logService, INavigationService navigationService) : base(logService, navigationService)
+    public GameViewModel(ILogService logService, INavigationService navigationService, IDialogService dialogService) : base(logService, navigationService)
     {
+        this.dialogService = dialogService;
     }
 
     [Reactive] public Themes SelectedTheme { get; set; }
@@ -66,6 +68,14 @@ public class GameViewModel : BaseViewModel, IQueryAttributable
         timer = null;
     }
 
+    public void ApplyQueryAttributes(IDictionary<string, object> query)
+    {
+        SelectedTheme = (Themes)query[nameof(SelectedTheme)];
+        SelectedLevel = (Level)query[nameof(SelectedLevel)];
+
+        InitGameCommand.Execute().Subscribe();
+    }
+
     protected override void CreateCommands()
     {
         base.CreateCommands();
@@ -74,12 +84,16 @@ public class GameViewModel : BaseViewModel, IQueryAttributable
         EqualsCardsCommand = ReactiveCommand.CreateFromTask<Tuple<Card, Card>, bool>(EqualsCards);
     }
 
-    public void ApplyQueryAttributes(IDictionary<string, object> query)
+    protected override async Task NavigateBackAsync()
     {
-        SelectedTheme = (Themes)query[nameof(SelectedTheme)];
-        SelectedLevel = (Level)query[nameof(SelectedLevel)];
+        timer.Dispose();
+        timer = null;
 
-        InitGameCommand.Execute().Subscribe();
+        bool goBack = await dialogService.ShowDialogConfirmationAsync(TextsResource.GameBackQuestionTitle, TextsResource.GameBackQuestionMessage, TextsResource.Cancel, TextsResource.Ok);
+        if (goBack)
+            await base.NavigateBackAsync();
+        else
+            InitTimer();
     }
 
     private void InitGame()

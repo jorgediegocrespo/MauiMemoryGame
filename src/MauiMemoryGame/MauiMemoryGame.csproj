@@ -114,6 +114,7 @@
 	  <None Remove="Resources\Images\star_wars_logo.png" />
 	  <None Remove="Resources\Raw\lose.json" />
 	  <None Remove="Resources\Raw\win.json" />
+	  <None Remove="Services\DialogService\" />
 	</ItemGroup>
 	
 	<ItemGroup>
@@ -171,6 +172,12 @@
 	  <MauiXaml Update="Features\Game\GameView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Controls\CardButton.xaml">
+	    <SubType></SubType>
+	  </MauiXaml>
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Services\DialogService\" />
+	</ItemGroup>
 </Project>

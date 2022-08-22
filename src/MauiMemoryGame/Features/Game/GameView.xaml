@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <base:BaseContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
                       xmlns:base="clr-namespace:MauiMemoryGame.Base"
                       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
@@ -17,6 +17,16 @@
                 <Setter Property="HorizontalTextAlignment" Value="Center" />
                 <Setter Property="VerticalTextAlignment" Value="Center" />
             </Style>
+
+            <Style TargetType="Frame">
+                <Setter Property="CornerRadius" Value="10" />
+                <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource CardBorderColorLight}, Dark={StaticResource CardBorderColorDark}}" />
+                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource BackgroundOneLight}, Dark={StaticResource BackgroundOneDark}}" />
+                <Setter Property="IsVisible" Value="False" />
+                <Setter Property="Padding" Value="0,10" />
+                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+                <Setter Property="VerticalOptions" Value="FillAndExpand" />
+            </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
     
@@ -34,12 +44,7 @@
         <controls:RoundedButton x:Name="btBack" ButtonType="Back" Margin="-10,0"
                                 HorizontalOptions="Start" VerticalOptions="Start" />
 
-        <Frame x:Name="frPairs" Grid.Row="1" Grid.Column="0"
-               CornerRadius="10" 
-               BorderColor="{AppThemeBinding Light={StaticResource CardBackgroundColorLight}, Dark={StaticResource CardBackgroundColorDark}}"
-               BackgroundColor="{AppThemeBinding Light={StaticResource CardBorderColorLight}, Dark={StaticResource CardBorderColorDark}}"
-               IsVisible="False" Padding="0,10"
-               HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+        <Frame x:Name="frPairs" Grid.Row="1" Grid.Column="0">
             <Grid RowDefinitions="*,20">
                 <Label x:Name="lbPairs" 
                        TextColor="{AppThemeBinding Light={StaticResource SecondaryColorLight}, Dark={StaticResource SecondaryColorDark}}"
@@ -48,12 +53,7 @@
             </Grid>
         </Frame>
 
-        <Frame x:Name="frAttemps" Grid.Row="1" Grid.Column="1"
-               CornerRadius="10"
-               BorderColor="{AppThemeBinding Light={StaticResource CardBackgroundColorLight}, Dark={StaticResource CardBackgroundColorDark}}"
-               BackgroundColor="{AppThemeBinding Light={StaticResource CardBorderColorLight}, Dark={StaticResource CardBorderColorDark}}"
-               IsVisible="False" Padding="0,10"
-               HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+        <Frame x:Name="frAttemps" Grid.Row="1" Grid.Column="1">
             <Grid RowDefinitions="*,20">
                 <Label x:Name="lbAttemps" 
                        TextColor="{AppThemeBinding Light={StaticResource RertiaryColorLight}, Dark={StaticResource RertiaryColorDark}}"
@@ -62,12 +62,7 @@
             </Grid>
         </Frame>
 
-        <Frame x:Name="frTimer" Grid.Row="1" Grid.Column="2"
-               CornerRadius="10"
-               BorderColor="{AppThemeBinding Light={StaticResource CardBackgroundColorLight}, Dark={StaticResource CardBackgroundColorDark}}"
-               BackgroundColor="{AppThemeBinding Light={StaticResource CardBorderColorLight}, Dark={StaticResource CardBorderColorDark}}"
-               IsVisible="False" Padding="5"
-               HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+        <Frame x:Name="frTimer" Grid.Row="1" Grid.Column="2" Padding="5">
             <Grid >
                 <Label x:Name="lbTimer" FontSize="Micro"/>
                 <controls:CircleProgressBar x:Name="timeProgress"
@@ -79,7 +74,7 @@
 
         <Grid x:Name="gridBoard" Grid.Row="2" Grid.ColumnSpan="3"
               RowSpacing="5" ColumnSpacing="5" Margin="0,10"
-              IsVisible="false" />
+               />
 
         <ActivityIndicator x:Name="aiCreatingBoard" Grid.RowSpan="3" Grid.ColumnSpan="3"
                            IsVisible="true" IsRunning="true"

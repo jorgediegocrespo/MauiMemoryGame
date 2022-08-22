@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiMemoryGame.Controls.CardButton">
+
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Image">
+                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+                <Setter Property="VerticalOptions" Value="FillAndExpand" />
+                <Setter Property="Aspect" Value="AspectFill" />
+            </Style>
+
+            <Style TargetType="Border">
+                <Setter Property="Stroke" Value="{AppThemeBinding Light={StaticResource ButtonColorLight}, Dark={StaticResource ButtonColorDark}}" />
+                <Setter Property="StrokeThickness" Value="2" />
+                <Setter Property="Padding" Value="16,8" />
+                <Setter Property="Margin" Value="5" />
+                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+                <Setter Property="VerticalOptions" Value="FillAndExpand" />
+            </Style>
+
+            <Style TargetType="BoxView">
+                <Setter Property="CornerRadius" Value="20" />
+                <Setter Property="Color" Value="Black" />
+                <Setter Property="Opacity" Value="0.8" />
+                <Setter Property="HeightRequest" Value="40" />
+                <Setter Property="Margin" Value="5" />
+                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+                <Setter Property="VerticalOptions" Value="End" />
+            </Style>
+
+            <Style x:Key="themeButton" TargetType="Button">
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="BorderColor" Value="White" />
+                <Setter Property="Margin" Value="5" />
+                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+                <Setter Property="VerticalOptions" Value="End" />
+            </Style>
+        </ResourceDictionary>
+    </ContentView.Resources>
+
+    <Border Padding="0">
+            <Border.Shadow>
+                <Shadow Brush="{AppThemeBinding Light='Black', Dark='White'}"
+                        Offset="2,2" Radius="20" Opacity="0.8" />
+            </Border.Shadow>
+            <Border.StrokeShape>
+                <RoundRectangle x:Name="borderRectangle" />
+            </Border.StrokeShape>
+
+            <Grid x:Name="gridContent" ColumnDefinitions="*,5*" Padding="0">
+                <Image x:Name="imgBackground" Aspect="AspectFill" Grid.ColumnSpan="2"/>
+                <BoxView x:Name="boxViewButtonBackground" Grid.Column="1"/>
+                <Button x:Name="buttonContent" Grid.Column="1" Style="{StaticResource themeButton}"/>
+            </Grid>
+        </Border>
+</ContentView>
+

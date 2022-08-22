@@ -32,7 +32,7 @@ public partial class GameView
 
 		disposables.Add(this.WhenAnyValue(x => x.ViewModel.Board)
 			.ObserveOn(RxApp.MainThreadScheduler)
-			.Subscribe(BuildBoard));
+			.Subscribe(x => BuildBoard(x, disposables)));
 
         disposables.Add(this.WhenAnyValue(x => x.ViewModel.IsInitiatingGame, x => x.IsDrawingBoard)
             .ObserveOn(RxApp.MainThreadScheduler)
@@ -50,7 +50,7 @@ public partial class GameView
         return result;
     }
 
-	private void BuildBoard(Card[,] board)
+	private void BuildBoard(Card[,] board, CompositeDisposable disposables)
 	{
 		try
 		{
@@ -59,7 +59,7 @@ public partial class GameView
 				return;
 
 			CreateGridBoard();
-			FillGridBoard(board);
+			FillGridBoard(board, disposables);
 		}
 		finally
 		{
@@ -67,22 +67,25 @@ public partial class GameView
         }
 	}
 
-	private void FillGridBoard(Card[,] board)
+	private void FillGridBoard(Card[,] board, CompositeDisposable disposables)
 	{
 		for (int row = 0; row < ViewModel.RowCount; row++)
 		{
 			for (int column = 0; column < ViewModel.ColumnCount; column++)
 			{
 				CardView cardView = new CardView { Card = board[row, column] };
-				TapGestureRecognizer tapGestureRecognizer = new TapGestureRecognizer();
-				tapGestureRecognizer.Tapped += TapGestureRecognizer_Tapped;
-				cardView.GestureRecognizers.Add(tapGestureRecognizer);
-				gridBoard.Add(cardView, column, row);
-			}
+                IObservable<EventPattern<object>> cardViewClicked = Observable.FromEventPattern(h => cardView.Clicked += h, h => cardView.Clicked -= h);
+                disposables.Add(cardViewClicked.Subscribe(x => TapGestureRecognizer_Tapped(this, null)));
+                //TODO
+                //TapGestureRecognizer tapGestureRecognizer = new TapGestureRecognizer();
+                //tapGestureRecognizer.Tapped += TapGestureRecognizer_Tapped;
+                //cardView.GestureRecognizers.Add(tapGestureRecognizer);
+                gridBoard.Add(cardView, column, row);
+            }
 		}
 	}
 
-	private void CreateGridBoard()
+    private void CreateGridBoard()
 	{
 		ClearGrid();
 		CreateGridBoardRows();
@@ -137,7 +140,7 @@ public partial class GameView
             });
 	}
 
-	private async Task ManageCardEqualsResult(bool areEquals, CardView secondPairCard)
+    private async Task ManageCardEqualsResult(bool areEquals, CardView secondPairCard)
 	{
         if (areEquals)
         {

@@ -165,4 +165,16 @@
   <data name="ThemeSelectorStarWars" xml:space="preserve">
     <value>Star Wars</value>
   </data>
+  <data name="GameBackQuestionTitle" xml:space="preserve">
+    <value>Abandonar juego</value>
+  </data>
+  <data name="GameBackQuestionMessage" xml:space="preserve">
+    <value>¿Seguro que desea abandonar el juego sin terminar la partida?</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancelar</value>
+  </data>
+  <data name="Ok" xml:space="preserve">
+    <value>Sí</value>
+  </data>
 </root>

@@ -12,10 +12,10 @@ public partial class ThemeSelectorView
     {
         base.CreateBindings(disposables);
 
-        disposables.Add(this.BindCommand(ViewModel, vm => vm.SelectDcCommand, v => v.btDc));
-        disposables.Add(this.BindCommand(ViewModel, vm => vm.SelectMarvelCommand, v => v.btMarvel));
-        disposables.Add(this.BindCommand(ViewModel, vm => vm.SelectSimpsonsCommand, v => v.btSimpson));
-        disposables.Add(this.BindCommand(ViewModel, vm => vm.SelectStarWarsCommand, v => v.btStarWars));
+        disposables.Add(this.OneWayBind(ViewModel, vm => vm.SelectDcCommand, v => v.btDc.Command));
+        disposables.Add(this.OneWayBind(ViewModel, vm => vm.SelectMarvelCommand, v => v.btMarvel.Command));
+        disposables.Add(this.OneWayBind(ViewModel, vm => vm.SelectSimpsonsCommand, v => v.btSimpson.Command));
+        disposables.Add(this.OneWayBind(ViewModel, vm => vm.SelectStarWarsCommand, v => v.btStarWars.Command));
     }
 }
 

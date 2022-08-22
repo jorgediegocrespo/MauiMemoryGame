@@ -2,14 +2,24 @@ namespace MauiMemoryGame.Features;
 
 public partial class CardView
 {
-    
-	public static readonly BindableProperty CardProperty = BindableProperty.Create(nameof(Card), typeof(Card), typeof(CardView), defaultBindingMode: BindingMode.OneWay, propertyChanged: CardChanged);
+    private CompositeDisposable disposables;
+
+    public static readonly BindableProperty CardProperty = BindableProperty.Create(nameof(Card), typeof(Card), typeof(CardView), defaultBindingMode: BindingMode.OneWay, propertyChanged: CardChanged);
     public bool IsShowingContent => frContent.IsVisible == true;
+
+    public event EventHandler Clicked;
 
     public CardView()
 	{
 		InitializeComponent();
-	}
+        disposables = new CompositeDisposable();
+        CreateEvents();
+    }
+
+    ~CardView()
+    {
+        disposables?.Dispose();
+    }
 
     public Card Card
     {
@@ -35,6 +45,12 @@ public partial class CardView
         frBackwards.IsVisible = true;
         await frBackwards.RotateYTo(-360);
         frBackwards.RotationY = 0;
+    }
+
+    private void CreateEvents()
+    {
+        IObservable<EventPattern<object>> gridContentClicked = Observable.FromEventPattern(h => tapContent.Tapped += h, h => tapContent.Tapped -= h);
+        disposables.Add(gridContentClicked.Subscribe(x => Clicked?.Invoke(this, null)));
     }
 
     private static void CardChanged(BindableObject bindable, object oldValue, object newValue)

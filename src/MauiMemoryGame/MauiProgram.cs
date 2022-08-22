@@ -28,7 +28,8 @@ public static class MauiProgram
     {
         return services
             .AddSingleton<INavigationService, NavigationService>()
-            .AddSingleton<ILogService, LogService>();
+            .AddSingleton<ILogService, LogService>()
+            .AddSingleton<IDialogService, DialogService>();
     }
 
     private static IServiceCollection RegisterViewsAndViewModels(this IServiceCollection services)

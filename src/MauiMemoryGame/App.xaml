@@ -7,20 +7,20 @@
         <ResourceDictionary>
 
             <Color x:Key="BackgroundOneLight">#FFFFFF</Color>
-            <Color x:Key="BackgroundTwoLight">#FFADD8E6</Color>
+            <Color x:Key="BackgroundTwoLight">#ADD8E6</Color>
             <Color x:Key="ButtonColorLight">#4C4CAD</Color>
             <Color x:Key="ButtonTextColorLight">#FFFFFF</Color>
             <Color x:Key="CardBackgroundColorLight">#4C4CAD</Color>
-            <Color x:Key="CardBorderColorLight">#FFFFFF</Color>
+            <Color x:Key="CardBorderColorLight">#4C4CAD</Color>
             <Color x:Key="TitleColorLight">#000000</Color>
             <Color x:Key="SecondaryColorLight">#ad4c4c</Color>
             <Color x:Key="RertiaryColorLight">#4cad4c</Color>
             <Color x:Key="ChartColorLight">#4C4CAD</Color>
             
 
-            <Color x:Key="BackgroundOneDark">#FFFFFF</Color>
-            <Color x:Key="BackgroundTwoDark">#FFADD8E6</Color>
-            <Color x:Key="ButtonColorDark">#4C4CAD</Color>
+            <Color x:Key="BackgroundOneDark">#000000</Color>
+            <Color x:Key="BackgroundTwoDark">#522719</Color>
+            <Color x:Key="ButtonColorDark">#FFFFFF</Color>
             <Color x:Key="ButtonTextColorDark">#FFFFFF</Color>
             <Color x:Key="CardBackgroundColorDark">#4C4CAD</Color>
             <Color x:Key="CardBorderColorDark">#FFFFFF</Color>

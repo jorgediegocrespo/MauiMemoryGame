@@ -58,11 +58,38 @@ namespace MauiMemoryGame.Resources.Texts {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        public static string Cancel {
+            get {
+                return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Attemps.
         /// </summary>
         public static string GameAttemps {
             get {
                 return ResourceManager.GetString("GameAttemps", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to leave the game without ending the game?.
+        /// </summary>
+        public static string GameBackQuestionMessage {
+            get {
+                return ResourceManager.GetString("GameBackQuestionMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Quit game.
+        /// </summary>
+        public static string GameBackQuestionTitle {
+            get {
+                return ResourceManager.GetString("GameBackQuestionTitle", resourceCulture);
             }
         }
         
@@ -144,6 +171,15 @@ namespace MauiMemoryGame.Resources.Texts {
         public static string MediumLevel {
             get {
                 return ResourceManager.GetString("MediumLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ok.
+        /// </summary>
+        public static string Ok {
+            get {
+                return ResourceManager.GetString("Ok", resourceCulture);
             }
         }
         

@@ -3,59 +3,13 @@
                       xmlns:base="clr-namespace:MauiMemoryGame.Base"
                       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                       xmlns:features="clr-namespace:MauiMemoryGame.Features"
-                      xmlns:texts="clr-namespace:MauiMemoryGame.Resources.Texts"                      
+                      xmlns:texts="clr-namespace:MauiMemoryGame.Resources.Texts"
+                      xmlns:controls="clr-namespace:MauiMemoryGame.Controls"                      
                       x:Class="MauiMemoryGame.Features.ThemeSelectorView"
                       x:DataType="features:ThemeSelectorViewModel" 
                       x:TypeArguments="features:ThemeSelectorViewModel"
                       Shell.NavBarIsVisible="False">
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <Style TargetType="ImageButton">
-                <Setter Property="CornerRadius" Value="20" />
-                <Setter Property="HeightRequest" Value="40" />
-                <Setter Property="Padding" Value="5" />
-                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
-                <Setter Property="VerticalOptions" Value="Center" />
-                <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource ButtonColorLight}, Dark={StaticResource ButtonColorDark}}" />
-                <Setter Property="BorderWidth" Value="2" />
-                <Setter Property="BackgroundColor" Value="Transparent" />
-            </Style>
-
-            <Style TargetType="Image">
-                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
-                <Setter Property="VerticalOptions" Value="FillAndExpand" />
-                <Setter Property="Aspect" Value="AspectFill" />
-            </Style>
-
-            <Style TargetType="Border">
-                <Setter Property="Stroke" Value="{AppThemeBinding Light={StaticResource ButtonColorLight}, Dark={StaticResource ButtonColorDark}}" />
-                <Setter Property="StrokeThickness" Value="2" />
-                <Setter Property="Padding" Value="16,8" />
-                <Setter Property="Margin" Value="5" />
-                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
-                <Setter Property="VerticalOptions" Value="FillAndExpand" />
-            </Style>
-
-            <Style TargetType="BoxView">
-                <Setter Property="CornerRadius" Value="20" />
-                <Setter Property="Color" Value="Black" />
-                <Setter Property="Opacity" Value="0.8" />
-                <Setter Property="HeightRequest" Value="40" />
-                <Setter Property="Margin" Value="5" />
-                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
-                <Setter Property="VerticalOptions" Value="End" />
-            </Style>
-
-            <Style x:Key="themeButton" TargetType="Button">
-                <Setter Property="TextColor" Value="White" />
-                <Setter Property="BorderColor" Value="White" />
-                <Setter Property="Margin" Value="5" />
-                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
-                <Setter Property="VerticalOptions" Value="End" />
-            </Style>
-        </ResourceDictionary>
-    </ContentPage.Resources>
-
+    
     <Grid RowDefinitions="50,*,*,*,50" ColumnDefinitions="5,*,*,5" 
           RowSpacing="10" ColumnSpacing="10" 
           Margin="0,0,0,-50">
@@ -71,65 +25,25 @@
                Margin="20" 
                HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand"  />
 
-        <Border Grid.Row="2" Grid.Column="1" Padding="0"> 
-            <Border.StrokeShape>
-                <RoundRectangle CornerRadius="20,20,20,0" />
-            </Border.StrokeShape>
-            <Border.Shadow>
-                <Shadow Brush="Black" Offset="2,2" Radius="20" Opacity="0.8" />
-            </Border.Shadow>
-            <Grid ColumnDefinitions="*,3*" Padding="0">
-                <Image Source="dc_logo.jpg" Aspect="AspectFill" Grid.ColumnSpan="2" />
-                <BoxView Grid.Column="1"/>
-                <Button x:Name="btDc" Grid.Column="1" Style="{StaticResource themeButton}"
-                        Text="{x:Static texts:TextsResource.ThemeSelectorDc}" />
-            </Grid>            
-        </Border>
-        
-        <Border Grid.Row="2" Grid.Column="2" Padding="0"> 
-            <Border.StrokeShape>
-                <RoundRectangle CornerRadius="20,20,0,20" />
-            </Border.StrokeShape>
-            <Border.Shadow>
-                <Shadow Brush="Black" Offset="2,2" Radius="20" Opacity="0.8" />
-            </Border.Shadow>
-            <Grid ColumnDefinitions="3*,*" Padding="0">
-                <Image Source="marvel_logo.jpg" Aspect="AspectFill" Grid.ColumnSpan="2"/>
-                <BoxView Grid.Column="0"/>
-                <Button x:Name="btMarvel" Grid.Column="0" Style="{StaticResource themeButton}"
-                        Text="{x:Static texts:TextsResource.ThemeSelectorMarvel}" />
-            </Grid>            
-        </Border>
-        
-        <Border Grid.Row="3" Grid.Column="1" Padding="0"> 
-            <Border.StrokeShape>
-                <RoundRectangle CornerRadius="20,0,20,20" />
-            </Border.StrokeShape>
-            <Border.Shadow>
-                <Shadow Brush="Black" Offset="2,2" Radius="20" Opacity="0.8" />
-            </Border.Shadow>
-            <Grid ColumnDefinitions="*,3*" Padding="0">
-                <Image Source="simpsons_logo.jpg" Aspect="AspectFill" Grid.ColumnSpan="2"/>
-                <BoxView Grid.Column="1" />
-                <Button x:Name="btSimpson" Grid.Column="1" Style="{StaticResource themeButton}"
-                        Text="{x:Static texts:TextsResource.ThemeSelectorSimpsons}" />
-            </Grid>            
-        </Border>
-        
-        <Border Grid.Row="3" Grid.Column="2" Padding="0"> 
-            <Border.StrokeShape>
-                <RoundRectangle CornerRadius="0,20,20,20" />
-            </Border.StrokeShape>
-            <Border.Shadow>
-                <Shadow Brush="Black" Offset="2,2" Radius="20" Opacity="0.8" />
-            </Border.Shadow>
-            <Grid ColumnDefinitions="3*,*" Padding="0">
-                <Image Source="star_wars_logo.jpg" Aspect="AspectFill" Grid.ColumnSpan="2"/>
-                <BoxView Grid.Column="0" />
-                <Button x:Name="btStarWars" Grid.Column="0" Style="{StaticResource themeButton}"
-                        Text="{x:Static texts:TextsResource.ThemeSelectorStarWars}" />
-            </Grid>            
-        </Border>
+        <controls:CardButton x:Name="btDc" Grid.Row="2" Grid.Column="1"
+                             CornerRadius="20,20,20,0" ButtonOnLeft="False"
+                             BackgroundSource="dc_logo.jpg"
+                             Text="{x:Static texts:TextsResource.ThemeSelectorDc}"/>
+
+        <controls:CardButton x:Name="btMarvel" Grid.Row="2" Grid.Column="2"
+                             CornerRadius="20,20,0,20" ButtonOnLeft="True"
+                             BackgroundSource="marvel_logo.jpg"
+                             Text="{x:Static texts:TextsResource.ThemeSelectorMarvel}"/>
+
+        <controls:CardButton x:Name="btSimpson" Grid.Row="3" Grid.Column="1"
+                             CornerRadius="20,0,20,20" ButtonOnLeft="False"
+                             BackgroundSource="simpsons_logo.jpg"
+                             Text="{x:Static texts:TextsResource.ThemeSelectorSimpsons}"/>
+
+        <controls:CardButton x:Name="btStarWars" Grid.Row="3" Grid.Column="2"
+                             CornerRadius="0,20,20,20" ButtonOnLeft="True"
+                             BackgroundSource="star_wars_logo.jpg"
+                             Text="{x:Static texts:TextsResource.ThemeSelectorStarWars}"/>
 
     </Grid>
 

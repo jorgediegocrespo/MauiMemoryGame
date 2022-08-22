@@ -35,6 +35,11 @@ public abstract class BaseViewModel : ReactiveObject
 
     protected virtual void CreateCommands()
     {
-        NavigateBackCommand = ReactiveCommand.CreateFromTask(navigationService.NavigateBack);
+        NavigateBackCommand = ReactiveCommand.CreateFromTask(NavigateBackAsync);
+    }
+
+    protected virtual Task NavigateBackAsync()
+    {
+        return navigationService.NavigateBack();
     }
 }
