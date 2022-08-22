@@ -51,6 +51,9 @@ public partial class CardView
     {
         IObservable<EventPattern<object>> gridContentClicked = Observable.FromEventPattern(h => tapContent.Tapped += h, h => tapContent.Tapped -= h);
         disposables.Add(gridContentClicked.Subscribe(x => Clicked?.Invoke(this, null)));
+
+        IObservable<EventPattern<object>> tapBackwardslicked = Observable.FromEventPattern(h => tapBackwards.Tapped += h, h => tapBackwards.Tapped -= h);
+        disposables.Add(tapBackwardslicked.Subscribe(x => Clicked?.Invoke(this, null)));
     }
 
     private static void CardChanged(BindableObject bindable, object oldValue, object newValue)

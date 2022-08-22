@@ -4,7 +4,7 @@
              x:Class="MauiMemoryGame.Controls.RoundedButton">
     
     <Border Stroke="{AppThemeBinding Light={StaticResource ButtonColorLight}, Dark={StaticResource ButtonColorDark}}"
-                StrokeThickness="4"
+                StrokeThickness="{OnPlatform 4, Android=2}"
                 StrokeShape="RoundRectangle 20,20,20,20"
                 Background="Transparent"
                 Margin="5" HeightRequest="40" WidthRequest="40"

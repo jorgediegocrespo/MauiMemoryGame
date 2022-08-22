@@ -75,11 +75,8 @@ public partial class GameView
 			{
 				CardView cardView = new CardView { Card = board[row, column] };
                 IObservable<EventPattern<object>> cardViewClicked = Observable.FromEventPattern(h => cardView.Clicked += h, h => cardView.Clicked -= h);
-                disposables.Add(cardViewClicked.Subscribe(x => TapGestureRecognizer_Tapped(this, null)));
-                //TODO
-                //TapGestureRecognizer tapGestureRecognizer = new TapGestureRecognizer();
-                //tapGestureRecognizer.Tapped += TapGestureRecognizer_Tapped;
-                //cardView.GestureRecognizers.Add(tapGestureRecognizer);
+                disposables.Add(cardViewClicked.Subscribe(x => TapGestureRecognizer_Tapped(x.Sender, null)));
+
                 gridBoard.Add(cardView, column, row);
             }
 		}

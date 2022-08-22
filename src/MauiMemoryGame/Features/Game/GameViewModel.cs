@@ -23,7 +23,7 @@ public class GameViewModel : BaseViewModel, IQueryAttributable
 
     public TimeSpan TotalTime => SelectedLevel switch
     {
-        Level.Low => TimeSpan.FromSeconds(25), //TODO TimeSpan.FromMinutes(5),
+        Level.Low => TimeSpan.FromSeconds(5), //TODO TimeSpan.FromMinutes(5),
         Level.Medium => TimeSpan.FromMinutes(4),
         Level.High => TimeSpan.FromMinutes(2),
         _ => throw new InvalidOperationException()

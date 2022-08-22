@@ -3,15 +3,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiMemoryGame.Features.CardView">
     <Grid>
-        <Grid.GestureRecognizers>
-            <TapGestureRecognizer x:Name="tapContent" />
-        </Grid.GestureRecognizers>
-
+        
         <Frame x:Name="frContent" 
                CornerRadius="20" HasShadow="True" 
                IsClippedToBounds="True"
                IsVisible="False" Padding="0"
                HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <Frame.GestureRecognizers>
+                <TapGestureRecognizer x:Name="tapContent" />
+            </Frame.GestureRecognizers>
             <Grid Padding="0" Margin="0">
                 <Image x:Name="imgContent" 
                        Aspect="AspectFill"
@@ -24,7 +24,11 @@
                BackgroundColor="{AppThemeBinding Light={StaticResource CardBackgroundColorLight}, Dark={StaticResource CardBackgroundColorDark}}"
                BorderColor="{AppThemeBinding Light={StaticResource CardBorderColorLight}, Dark={StaticResource CardBorderColorDark}}"
                IsVisible="True" 
-               HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" />
+               HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" >
+            <Frame.GestureRecognizers>
+                <TapGestureRecognizer x:Name="tapBackwards" />
+            </Frame.GestureRecognizers>
+        </Frame>
 
     </Grid>
 </ContentView>
