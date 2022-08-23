@@ -1,4 +1,5 @@
-﻿using System.Reactive.Concurrency;
+﻿using System.Linq;
+using System.Reactive.Concurrency;
 
 namespace MauiMemoryGame.Features;
 
@@ -59,7 +60,7 @@ public class GameViewModel : BaseViewModel, IQueryAttributable
         disposables.Add(EqualsCardsCommand.ThrownExceptions.Subscribe(logService.TraceError));
         disposables.Add(EqualsCardsCommand.IsExecuting.ToPropertyEx(this, x => x.IsComparingCards));
 
-        InitTimer();
+        InitGameCommand.Execute().Subscribe();
     }
 
     public override async Task OnDisappearingAsync()
@@ -72,8 +73,6 @@ public class GameViewModel : BaseViewModel, IQueryAttributable
     {
         SelectedTheme = (Themes)query[nameof(SelectedTheme)];
         SelectedLevel = (Level)query[nameof(SelectedLevel)];
-
-        InitGameCommand.Execute().Subscribe();
     }
 
     protected override void CreateCommands()
@@ -86,7 +85,7 @@ public class GameViewModel : BaseViewModel, IQueryAttributable
 
     protected override async Task NavigateBackAsync()
     {
-        timer.Dispose();
+        timer?.Dispose();
         timer = null;
 
         bool goBack = await dialogService.ShowDialogConfirmationAsync(TextsResource.GameBackQuestionTitle, TextsResource.GameBackQuestionMessage, TextsResource.Cancel, TextsResource.Ok);
@@ -100,6 +99,7 @@ public class GameViewModel : BaseViewModel, IQueryAttributable
     {
         CreateBoard();
         InitValues();
+        InitTimer();
     }
 
     private void InitValues()
@@ -264,10 +264,6 @@ public class GameViewModel : BaseViewModel, IQueryAttributable
         timer?.Dispose();
         timer = null;
 
-        bool playAgain = await navigationService.NavigateBackToGameOver(GameWon);
-        if (playAgain)
-            InitGameCommand.Execute().Subscribe();
-        else
-            await navigationService.NavigateBackToStart();
+        await navigationService.NavigateToGameOverPopup(GameWon);
     }
 }

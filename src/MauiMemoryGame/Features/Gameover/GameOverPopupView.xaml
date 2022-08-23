@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<base:BasePopup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                xmlns:base="clr-namespace:MauiMemoryGame.Base"
+                xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                xmlns:features="clr-namespace:MauiMemoryGame.Features"
+                xmlns:controls="clr-namespace:MauiMemoryGame.Controls"
+                xmlns:texts="clr-namespace:MauiMemoryGame.Resources.Texts"
+                xmlns:skiaextended="clr-namespace:SkiaSharp.Extended.UI.Controls;assembly=SkiaSharp.Extended.UI"
+                x:Class="MauiMemoryGame.Features.GameOverPopupView"
+                x:DataType="features:GameOverPopupViewModel" 
+                x:TypeArguments="features:GameOverPopupViewModel"
+                Shell.NavBarIsVisible="False"
+                Shell.PresentationMode="ModalAnimated">
+
+    <Grid>
+        <Frame Margin="20,50" Padding="0">
+            <Grid x:Name="gridContent" RowDefinitions="50,170,*,50" 
+                  RowSpacing="0"
+                  Padding="10" Margin="0">
+                <Grid.Background>
+                    <LinearGradientBrush StartPoint="1,1" EndPoint="0,0">
+                        <GradientStop Color="{AppThemeBinding Light={StaticResource BackgroundOneLight}, Dark={StaticResource BackgroundOneDark}}" Offset="0.1" />
+                        <GradientStop Color="{AppThemeBinding Light={StaticResource BackgroundTwoLight}, Dark={StaticResource BackgroundTwoDark}}" Offset="1.0" />
+                    </LinearGradientBrush>
+                </Grid.Background>
+
+                <controls:RoundedButton x:Name="btClose" ButtonType="Close"
+                                        Margin="0,-10,0,0"
+                                        HorizontalOptions="End" VerticalOptions="Start" />
+
+                <skiaextended:SKLottieView x:Name="skiaLottie" Grid.Row="1"
+                                           Margin="10,0" 
+                                           RepeatMode="Restart" RepeatCount="100"
+                                           Background="Transparent"
+                                           VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" />
+
+                <VerticalStackLayout Grid.Row="2" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand">
+                    <Label x:Name="lbTitle" Style="{StaticResource lbTitle}"
+                           Margin="10,0"/>
+                    <Label x:Name="lbSubtitle" Style="{StaticResource lbSubTitle}" 
+                           Margin="10,0"/>
+                </VerticalStackLayout>
+
+                <Button x:Name="btPlayAgain" Grid.Row="3" Grid.Column="0" 
+                        Text="{x:Static texts:TextsResource.PlayAgain}" 
+                        Margin="30,0"/>
+            </Grid>
+        </Frame>
+        
+    </Grid>
+</base:BasePopup>

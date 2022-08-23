@@ -37,6 +37,7 @@ public static class MauiProgram
         return services
             .AddTransient<ThemeSelectorViewModel>().AddTransient<ThemeSelectorView>()
             .AddTransient<LevelSelectorViewModel>().AddTransient<LevelSelectorView>()
-            .AddTransient<GameViewModel>().AddTransient<GameView>();
+            .AddTransient<GameViewModel>().AddTransient<GameView>()
+            .AddTransient<GameOverPopupViewModel>().AddTransient<GameOverPopupView>();
     }
 }

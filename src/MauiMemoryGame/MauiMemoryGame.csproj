@@ -133,9 +133,6 @@
 	  <Compile Update="Features\LevelSelector\LevelSelectorView.xaml.cs">
 	    <DependentUpon>LevelSelectorView.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="Features\Gameover\GameOverView.xaml.cs">
-	    <DependentUpon>GameOverView.xaml</DependentUpon>
-	  </Compile>
 	  <Compile Update="Features\ThemeSelector\ThemeSelectorView.xaml.cs">
 	    <DependentUpon>ThemeSelectorView.xaml</DependentUpon>
 	  </Compile>
@@ -160,11 +157,11 @@
 	  <MauiXaml Update="Controls\RoundedButton.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Features\Gameover\GameOverPopupView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Features\LevelSelector\LevelSelectorView.xaml">
 	    <Generator></Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Features\Gameover\GameOverView.xaml">
-	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Features\Game\CardView.xaml">
 	    <Generator>MSBuild:Compile</Generator>

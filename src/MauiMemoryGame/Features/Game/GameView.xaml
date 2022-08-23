@@ -73,8 +73,7 @@
         </Frame>
 
         <Grid x:Name="gridBoard" Grid.Row="2" Grid.ColumnSpan="3"
-              RowSpacing="5" ColumnSpacing="5" Margin="0,10"
-               />
+              RowSpacing="5" ColumnSpacing="5" Margin="0,10" />
 
         <ActivityIndicator x:Name="aiCreatingBoard" Grid.RowSpan="3" Grid.ColumnSpan="3"
                            IsVisible="true" IsRunning="true"

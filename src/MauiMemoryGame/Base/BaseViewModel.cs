@@ -33,6 +33,21 @@ public abstract class BaseViewModel : ReactiveObject
         return Task.CompletedTask;
     }
 
+    public virtual Task OnNavigatedFromAsync(NavigatedFromEventArgs args)
+    {
+        return Task.CompletedTask;
+    }
+
+    public virtual Task OnNavigatingFromAsync(NavigatingFromEventArgs args)
+    {
+        return Task.CompletedTask;
+    }
+
+    public virtual Task OnNavigatedToAsync(NavigatedToEventArgs args)
+    {
+        return Task.CompletedTask;
+    }
+
     protected virtual void CreateCommands()
     {
         NavigateBackCommand = ReactiveCommand.CreateFromTask(NavigateBackAsync);

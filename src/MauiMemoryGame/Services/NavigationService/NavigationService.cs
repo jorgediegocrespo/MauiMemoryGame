@@ -1,6 +1,4 @@
-﻿using CommunityToolkit.Maui.Views;
-
-namespace MauiMemoryGame.Services;
+﻿namespace MauiMemoryGame.Services;
 
 public class NavigationService : INavigationService
 {
@@ -32,12 +30,14 @@ public class NavigationService : INavigationService
         return Shell.Current.GoToAsync(nameof(GameView), navigationParameter);
     }
 
-    public async Task<bool> NavigateBackToGameOver(bool isWinner)
+    public Task NavigateToGameOverPopup(bool isWinner)
     {
-        GameOverView gameOverPopup = new GameOverView(isWinner);
-        object result = await Shell.Current.ShowPopupAsync(gameOverPopup);
+        var navigationParameter = new Dictionary<string, object>
+        {
+            { nameof(GameOverPopupViewModel.IsWinner), isWinner }
+        };
 
-        return (bool)result;
+        return Shell.Current.GoToAsync(nameof(GameOverPopupView), navigationParameter);
     }
 
     public Task NavigateBack()
@@ -47,6 +47,6 @@ public class NavigationService : INavigationService
 
     public Task NavigateBackToStart()
     {
-        return Shell.Current.GoToAsync("../../..");
+        return Shell.Current.Navigation.PopToRootAsync();
     }
 }
