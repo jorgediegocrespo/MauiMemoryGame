@@ -4,8 +4,6 @@ namespace MauiMemoryGame.Controls;
 
 public partial class CardButton : ContentView
 {
-    private CompositeDisposable disposables;
-
     public static readonly BindableProperty CommandProperty = BindableProperty.Create(nameof(Command), typeof(ICommand), typeof(CardButton), propertyChanged: CommandChanged);
     public static readonly BindableProperty CornerRadiusProperty = BindableProperty.Create(nameof(CornerRadius), typeof(CornerRadius), typeof(CardButton), propertyChanged: CornerRadiusChanged);
     public static readonly BindableProperty ButtonOnLeftProperty = BindableProperty.Create(nameof(ButtonOnLeft), typeof(bool), typeof(CardButton), propertyChanged: ButtonOnLeftChanged);
@@ -17,11 +15,6 @@ public partial class CardButton : ContentView
 	{
 		InitializeComponent();
 	}
-
-    ~CardButton()
-    {
-        disposables?.Dispose();
-    }
 
     public ICommand Command
     {
