@@ -29,56 +29,60 @@ public partial class ThemeSelectorView
     {
         await base.RunAppearingAnimationAsync();
 
-        var animation = new Animation();
-        double step = 0.5 / 4;
-
-        animation.Add(0, 0.5, new Animation(x => lbTitle.Opacity = x, 0, 1));
-        animation.Add(step * 1, 0.5 + step * 1, new Animation(x => btDc.Opacity = x, 0, 1));
-        animation.Add(step * 2, 0.5 + step * 2, new Animation(x => btMarvel.Opacity = x, 0, 1));
-        animation.Add(step * 3, 0.5 + step * 3, new Animation(x => btSimpson.Opacity = x, 0, 1));
-        animation.Add(step * 4, 0.5 + step * 4, new Animation(x => btStarWars.Opacity = x, 0, 1));
-
-        TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
-        animation.Commit(this, "appearingAnimation", length: 1000, finished: (x, y) =>
+        using (var animation = new Animation())
         {
-            lbTitle.Opacity = 1;
-            btDc.Opacity = 1;
-            btMarvel.Opacity = 1;
-            btSimpson.Opacity = 1;
-            btStarWars.Opacity = 1;
+            double step = 0.5 / 4;
 
-            tcs.SetResult(true);
-        });
+            animation.Add(0, 0.5, new Animation(x => lbTitle.Opacity = x, 0, 1));
+            animation.Add(step * 1, 0.5 + step * 1, new Animation(x => btDc.Opacity = x, 0, 1));
+            animation.Add(step * 2, 0.5 + step * 2, new Animation(x => btMarvel.Opacity = x, 0, 1));
+            animation.Add(step * 3, 0.5 + step * 3, new Animation(x => btSimpson.Opacity = x, 0, 1));
+            animation.Add(step * 4, 0.5 + step * 4, new Animation(x => btStarWars.Opacity = x, 0, 1));
 
-        await tcs.Task;
+            TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
+            animation.Commit(this, "appearingAnimation", length: 1000, finished: (x, y) =>
+            {
+                lbTitle.Opacity = 1;
+                btDc.Opacity = 1;
+                btMarvel.Opacity = 1;
+                btSimpson.Opacity = 1;
+                btStarWars.Opacity = 1;
+
+                tcs.SetResult(true);
+            });
+
+            await tcs.Task;
+        }
     }
 
     public override async Task RunDisappearingAnimationAsync()
     {
         await base.RunDisappearingAnimationAsync();
 
-        var animation = new Animation();
-        double step = 0.5 / 4;
-
-        animation.Add(0, 0.5, new Animation(x => lbTitle.Opacity = x, 1, 0));
-        animation.Add(step * 1, 0.5 + step * 1, new Animation(x => btDc.Opacity = x, 1, 0));
-        animation.Add(step * 2, 0.5 + step * 2, new Animation(x => btMarvel.Opacity = x, 1, 0));
-        animation.Add(step * 3, 0.5 + step * 3, new Animation(x => btSimpson.Opacity = x, 1, 0));
-        animation.Add(step * 4, 0.5 + step * 4, new Animation(x => btStarWars.Opacity = x, 1, 0));
-
-        TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
-        animation.Commit(this, "disappearingAnimation", length: 1000, finished: (x, y) =>
+        using (var animation = new Animation())
         {
-            lbTitle.Opacity = 0;
-            btDc.Opacity = 0;
-            btMarvel.Opacity = 0;
-            btSimpson.Opacity = 0;
-            btStarWars.Opacity = 0;
+            double step = 0.5 / 4;
 
-            tcs.SetResult(true);
-        });
+            animation.Add(0, 0.5, new Animation(x => lbTitle.Opacity = x, 1, 0));
+            animation.Add(step * 1, 0.5 + step * 1, new Animation(x => btDc.Opacity = x, 1, 0));
+            animation.Add(step * 2, 0.5 + step * 2, new Animation(x => btMarvel.Opacity = x, 1, 0));
+            animation.Add(step * 3, 0.5 + step * 3, new Animation(x => btSimpson.Opacity = x, 1, 0));
+            animation.Add(step * 4, 0.5 + step * 4, new Animation(x => btStarWars.Opacity = x, 1, 0));
 
-        await tcs.Task;
+            TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
+            animation.Commit(this, "disappearingAnimation", length: 1000, finished: (x, y) =>
+            {
+                lbTitle.Opacity = 0;
+                btDc.Opacity = 0;
+                btMarvel.Opacity = 0;
+                btSimpson.Opacity = 0;
+                btStarWars.Opacity = 0;
+
+                tcs.SetResult(true);
+            });
+
+            await tcs.Task;
+        }
     }
 }
 
