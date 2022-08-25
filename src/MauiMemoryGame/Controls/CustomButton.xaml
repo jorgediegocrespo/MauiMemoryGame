@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiMemoryGame.Controls.CustomButton">
+
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Button">
+                <Setter Property="CornerRadius" Value="20" />
+                <Setter Property="HeightRequest" Value="40" />
+                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+                <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource ButtonColorLight}, Dark={StaticResource ButtonColorDark}}" />
+                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource ButtonColorLight}, Dark={StaticResource ButtonColorDark}}" />
+                <Setter Property="BorderWidth" Value="2" />
+                <Setter Property="BackgroundColor" Value="Transparent" />
+            </Style>
+
+        </ResourceDictionary>
+    </ContentView.Resources>
+    
+    
+    <Grid Margin="0" Padding="0"
+          HeightRequest="40"
+          BackgroundColor="Transparent">
+        <Button x:Name="btCustom" 
+                Padding="0" Margin="0"
+                HorizontalOptions="FillAndExpand" VerticalOptions="Center"/>
+
+        <ActivityIndicator x:Name="aiBusy"
+                           Color="{AppThemeBinding Light={StaticResource ButtonColorLight}, Dark={StaticResource ButtonColorDark}}"
+                           IsVisible="False" IsRunning="False"
+                           HeightRequest="30"
+                           Margin="0"
+                           HorizontalOptions="Center" VerticalOptions="Center" />
+    </Grid>
+</ContentView>

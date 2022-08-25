@@ -1,8 +1,7 @@
 ﻿namespace MauiMemoryGame.Base;
 
-public abstract class BaseViewModel : ReactiveObject
+public abstract class BaseViewModel : ReactiveObject, IActivatableViewModel
 {
-    protected CompositeDisposable disposables;
     protected readonly ILogService logService;
     protected readonly INavigationService navigationService;
 
@@ -10,26 +9,32 @@ public abstract class BaseViewModel : ReactiveObject
     {
         this.logService = logService;
         this.navigationService = navigationService;
-
+        
         CreateCommands();
+
+        Activator = new ViewModelActivator();
+        this.WhenActivated(disposables =>
+        {
+            HandleActivation(disposables);
+
+            Disposable
+                .Create(() => HandleDeactivation())
+                .DisposeWith(disposables);
+        });
     }
+
+    public ViewModelActivator Activator { get; }
 
     public ReactiveCommand<Unit, Unit> NavigateBackCommand { get; private set; }
     public extern bool IsNavigatingBack { [ObservableAsProperty] get; }
 
     public virtual Task OnAppearingAsync()
     {
-        disposables = disposables ?? new CompositeDisposable();
-        disposables.Add(NavigateBackCommand.ThrownExceptions.Subscribe(logService.TraceError));
-        disposables.Add(NavigateBackCommand.IsExecuting.ToPropertyEx(this, x => x.IsNavigatingBack));
-
         return Task.CompletedTask;
     }
 
     public virtual Task OnDisappearingAsync()
     {
-        disposables?.Dispose();
-        disposables = null;
         return Task.CompletedTask;
     }
 
@@ -48,13 +53,19 @@ public abstract class BaseViewModel : ReactiveObject
         return Task.CompletedTask;
     }
 
+    protected virtual void HandleActivation(CompositeDisposable disposables)
+    {
+        NavigateBackCommand.ThrownExceptions.Subscribe(logService.TraceError).DisposeWith(disposables);
+        NavigateBackCommand.IsExecuting.ToPropertyEx(this, x => x.IsNavigatingBack).DisposeWith(disposables);
+    }
+
+    protected virtual void HandleDeactivation()
+    { }
+
     protected virtual void CreateCommands()
     {
         NavigateBackCommand = ReactiveCommand.CreateFromTask(NavigateBackAsync);
     }
 
-    protected virtual Task NavigateBackAsync()
-    {
-        return navigationService.NavigateBack();
-    }
+    protected virtual Task NavigateBackAsync() => navigationService.NavigateBack();
 }

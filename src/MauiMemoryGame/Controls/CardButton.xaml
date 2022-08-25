@@ -30,12 +30,17 @@
                 <Setter Property="VerticalOptions" Value="End" />
             </Style>
 
-            <Style x:Key="themeButton" TargetType="Button">
+            <Style TargetType="Button">
+                <Setter Property="CornerRadius" Value="20" />
                 <Setter Property="TextColor" Value="White" />
                 <Setter Property="BorderColor" Value="White" />
+                <Setter Property="BorderWidth" Value="2" />
                 <Setter Property="Margin" Value="5" />
+                <Setter Property="HeightRequest" Value="40" />
+                <Setter Property="BackgroundColor" Value="Transparent" />
                 <Setter Property="HorizontalOptions" Value="FillAndExpand" />
                 <Setter Property="VerticalOptions" Value="End" />
+
             </Style>
         </ResourceDictionary>
     </ContentView.Resources>
@@ -52,8 +57,13 @@
             <Grid x:Name="gridContent" ColumnDefinitions="*,5*" Padding="0">
                 <Image x:Name="imgBackground" Aspect="AspectFill" Grid.ColumnSpan="2"/>
                 <BoxView x:Name="boxViewButtonBackground" Grid.Column="1"/>
-                <Button x:Name="buttonContent" Grid.Column="1" Style="{StaticResource themeButton}"/>
-            </Grid>
+                <Button x:Name="buttonContent" Grid.Column="1" />
+                <ActivityIndicator x:Name="aiBusy" Grid.Column="1"
+                               Color="White"
+                               IsVisible="False" IsRunning="False"
+                               HeightRequest="30" Margin="10"
+                               HorizontalOptions="Center" VerticalOptions="End" />
+        </Grid>
         </Border>
 </ContentView>
 

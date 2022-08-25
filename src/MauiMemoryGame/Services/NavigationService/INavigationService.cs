@@ -4,7 +4,8 @@ public interface INavigationService
 {
     Task NavigateToLevelSelection(Themes selectedTheme);
     Task NavigateToGame(Themes selectedTheme, Level selectedLevel);
-    Task NavigateToGameOverPopup(bool isWinner);
+    Task NavigateToGameOverPopup(Themes selectedTheme, Level selectedLevel, bool isWinner);
+    Task PlayAgainFromGameOver(Themes selectedTheme, Level selectedLevel);
     Task NavigateBack();
     Task NavigateBackToStart();
 }

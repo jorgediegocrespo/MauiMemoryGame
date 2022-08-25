@@ -11,6 +11,7 @@ public partial class CardButton : ContentView
     public static readonly BindableProperty ButtonOnLeftProperty = BindableProperty.Create(nameof(ButtonOnLeft), typeof(bool), typeof(CardButton), propertyChanged: ButtonOnLeftChanged);
     public static readonly BindableProperty BackgroundSourceProperty = BindableProperty.Create(nameof(BackgroundSource), typeof(ImageSource), typeof(CardButton), propertyChanged: BackgroundSourceChanged);
     public static readonly BindableProperty TextProperty = BindableProperty.Create(nameof(Text), typeof(string), typeof(CardButton), propertyChanged: TextChanged);
+    public static readonly BindableProperty IsBusyProperty = BindableProperty.Create(nameof(IsBusy), typeof(bool), typeof(CardButton), defaultBindingMode: BindingMode.OneWay, propertyChanged: IsBusyChanged);
 
     public CardButton()
 	{
@@ -52,6 +53,12 @@ public partial class CardButton : ContentView
         set => SetValue(TextProperty, value);
     }
 
+    public bool IsBusy
+    {
+        get => (bool)GetValue(IsBusyProperty);
+        set => SetValue(IsBusyProperty, value);
+    }
+
     private static void CommandChanged(BindableObject bindable, object oldValue, object newValue)
     {
         ((CardButton)bindable).buttonContent.Command = (ICommand)newValue;
@@ -81,5 +88,15 @@ public partial class CardButton : ContentView
     private static void TextChanged(BindableObject bindable, object oldValue, object newValue)
     {
         ((CardButton)bindable).buttonContent.Text = (string)newValue;
+    }
+
+    private static void IsBusyChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        CardButton control = (CardButton)bindable;
+        bool value = (bool)newValue;
+
+        control.buttonContent.Text = value ? string.Empty : control.Text;
+        control.aiBusy.IsRunning = value;
+        control.aiBusy.IsVisible = value;
     }
 }

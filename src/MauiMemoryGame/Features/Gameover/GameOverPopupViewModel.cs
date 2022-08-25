@@ -1,34 +1,47 @@
 ﻿namespace MauiMemoryGame.Features;
 
-[QueryProperty(nameof(IsWinner), nameof(IsWinner))]
-public class GameOverPopupViewModel : BaseViewModel
+public class GameOverPopupViewModel : BaseViewModel, IQueryAttributable
 {
     public GameOverPopupViewModel(ILogService logService, INavigationService navigationService) : base(logService, navigationService)
     {
     }
 
-    [Reactive] public bool IsWinner { get; set; }
+    public Themes SelectedTheme { get; private set; }
+    public Level SelectedLevel { get; private set; }
+    [Reactive] public bool IsWinner { get; private set; }
 
     public ReactiveCommand<Unit, Unit> PlayAgainCommand { get; private set; }
     public extern bool IsGoingToPlayAgain { [ObservableAsProperty] get; }
 
-    public override async Task OnAppearingAsync()
+    public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
-        await base.OnAppearingAsync();
+        SelectedTheme = (Themes)query[nameof(SelectedTheme)];
+        SelectedLevel = (Level)query[nameof(SelectedLevel)];
+        IsWinner = (bool)query[nameof(IsWinner)];
+    }
 
-        disposables.Add(PlayAgainCommand.ThrownExceptions.Subscribe(logService.TraceError));
-        disposables.Add(PlayAgainCommand.IsExecuting.ToPropertyEx(this, x => x.IsGoingToPlayAgain));
+    protected override void HandleActivation(CompositeDisposable disposables)
+    {
+        base.HandleActivation(disposables);
+
+        PlayAgainCommand.ThrownExceptions.Subscribe(logService.TraceError).DisposeWith(disposables);
+        PlayAgainCommand.IsExecuting.ToPropertyEx(this, x => x.IsGoingToPlayAgain).DisposeWith(disposables);
+    }
+
+    protected override Task NavigateBackAsync()
+    {
+        return navigationService.NavigateBackToStart();
     }
 
     protected override void CreateCommands()
     {
         base.CreateCommands();
 
-        PlayAgainCommand = ReactiveCommand.CreateFromTask(navigationService.NavigateBack);
+        PlayAgainCommand = ReactiveCommand.CreateFromTask(PlayAgainAsync);
     }
 
-    protected override Task NavigateBackAsync()
+    private Task PlayAgainAsync()
     {
-        return navigationService.NavigateBackToStart();
+        return navigationService.PlayAgainFromGameOver(SelectedTheme, SelectedLevel);
     }
 }

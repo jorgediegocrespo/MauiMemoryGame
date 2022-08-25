@@ -1,4 +1,4 @@
-namespace MauiMemoryGame.Features;
+namespace MauiMemoryGame.Controls;
 
 public partial class CardView
 {
@@ -49,11 +49,15 @@ public partial class CardView
 
     private void CreateEvents()
     {
-        IObservable<EventPattern<object>> gridContentClicked = Observable.FromEventPattern(h => tapContent.Tapped += h, h => tapContent.Tapped -= h);
-        disposables.Add(gridContentClicked.Subscribe(x => Clicked?.Invoke(this, null)));
+        Observable
+            .FromEventPattern(h => tapContent.Tapped += h, h => tapContent.Tapped -= h)
+            .Subscribe(x => Clicked?.Invoke(this, null))
+            .DisposeWith(disposables);
 
-        IObservable<EventPattern<object>> tapBackwardslicked = Observable.FromEventPattern(h => tapBackwards.Tapped += h, h => tapBackwards.Tapped -= h);
-        disposables.Add(tapBackwardslicked.Subscribe(x => Clicked?.Invoke(this, null)));
+        Observable
+            .FromEventPattern(h => tapBackwards.Tapped += h, h => tapBackwards.Tapped -= h)
+            .Subscribe(x => Clicked?.Invoke(this, null))
+            .DisposeWith(disposables);
     }
 
     private static void CardChanged(BindableObject bindable, object oldValue, object newValue)

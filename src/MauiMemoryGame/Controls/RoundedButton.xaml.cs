@@ -8,6 +8,7 @@ public partial class RoundedButton : ContentView
 
     public static readonly BindableProperty CommandProperty = BindableProperty.Create(nameof(Command), typeof(ICommand), typeof(RoundedButton), propertyChanged: CommandChanged);
     public static readonly BindableProperty ButtonTypeProperty = BindableProperty.Create(nameof(ButtonType), typeof(RoundedButtonType), typeof(RoundedButton), defaultBindingMode: BindingMode.OneWay, defaultValue: RoundedButtonType.Back, propertyChanged: ButtonTypeChanged);
+    public static readonly BindableProperty IsBusyProperty = BindableProperty.Create(nameof(IsBusy), typeof(bool), typeof(RoundedButton), defaultBindingMode: BindingMode.OneWay, propertyChanged: IsBusyChanged);
 
     public event EventHandler Clicked;
 
@@ -37,10 +38,16 @@ public partial class RoundedButton : ContentView
         set => SetValue(ButtonTypeProperty, value);
     }
 
+    public bool IsBusy
+    {
+        get => (bool)GetValue(IsBusyProperty);
+        set => SetValue(IsBusyProperty, value);
+    }
+
     private void CreateEvents()
     {
         IObservable<EventPattern<object>> btCustomClicked = Observable.FromEventPattern(h => button.Clicked += h, h => button.Clicked -= h);
-        disposables.Add(btCustomClicked.Subscribe(x => Clicked?.Invoke(this, null)));
+        btCustomClicked.Subscribe(x => Clicked?.Invoke(this, null)).DisposeWith(disposables);
     }
 
     private void RefreshIcon()
@@ -61,6 +68,16 @@ public partial class RoundedButton : ContentView
     private static void ButtonTypeChanged(BindableObject bindable, object oldValue, object newValue)
     {
         ((RoundedButton)bindable).RefreshIcon();
+    }
+
+    private static void IsBusyChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        RoundedButton control = (RoundedButton)bindable;
+        bool value = (bool)newValue;
+
+        control.button.IsVisible = !value;
+        control.aiBusy.IsRunning = value;
+        control.aiBusy.IsVisible = value;
     }
 }
 

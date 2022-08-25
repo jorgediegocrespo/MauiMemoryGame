@@ -20,30 +20,34 @@
             </LinearGradientBrush>
         </Grid.Background>
 
-        <Label Grid.Row="1" Grid.ColumnSpan="4" Style="{StaticResource lbTitle}"
+        <Label x:Name="lbTitle" Grid.Row="1" Grid.ColumnSpan="4" Style="{StaticResource lbTitle}"
                Text="{x:Static texts:TextsResource.ThemeSelectorTitle}" 
-               Margin="20" 
+               Margin="20" Opacity="0"
                HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand"  />
 
         <controls:CardButton x:Name="btDc" Grid.Row="2" Grid.Column="1"
                              CornerRadius="20,20,20,0" ButtonOnLeft="False"
                              BackgroundSource="dc_logo.jpg"
-                             Text="{x:Static texts:TextsResource.ThemeSelectorDc}"/>
+                             Text="{x:Static texts:TextsResource.ThemeSelectorDc}"
+                             Opacity="0"/>
 
         <controls:CardButton x:Name="btMarvel" Grid.Row="2" Grid.Column="2"
                              CornerRadius="20,20,0,20" ButtonOnLeft="True"
                              BackgroundSource="marvel_logo.jpg"
-                             Text="{x:Static texts:TextsResource.ThemeSelectorMarvel}"/>
+                             Text="{x:Static texts:TextsResource.ThemeSelectorMarvel}"
+                             Opacity="0"/>
 
         <controls:CardButton x:Name="btSimpson" Grid.Row="3" Grid.Column="1"
                              CornerRadius="20,0,20,20" ButtonOnLeft="False"
                              BackgroundSource="simpsons_logo.jpg"
-                             Text="{x:Static texts:TextsResource.ThemeSelectorSimpsons}"/>
+                             Text="{x:Static texts:TextsResource.ThemeSelectorSimpsons}"
+                             Opacity="0"/>
 
         <controls:CardButton x:Name="btStarWars" Grid.Row="3" Grid.Column="2"
                              CornerRadius="0,20,20,20" ButtonOnLeft="True"
                              BackgroundSource="star_wars_logo.jpg"
-                             Text="{x:Static texts:TextsResource.ThemeSelectorStarWars}"/>
+                             Text="{x:Static texts:TextsResource.ThemeSelectorStarWars}"
+                             Opacity="0"/>
 
     </Grid>
 

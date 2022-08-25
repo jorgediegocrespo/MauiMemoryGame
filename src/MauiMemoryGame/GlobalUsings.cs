@@ -8,3 +8,4 @@ global using MauiMemoryGame.Resources.Texts;
 global using System.Reactive.Disposables;
 global using System.Reactive.Linq;
 global using MauiMemoryGame.Models;
+global using MauiMemoryGame.Controls;

@@ -4,21 +4,29 @@
              x:Class="MauiMemoryGame.Controls.RoundedButton">
     
     <Border Stroke="{AppThemeBinding Light={StaticResource ButtonColorLight}, Dark={StaticResource ButtonColorDark}}"
-                StrokeThickness="{OnPlatform 4, Android=2}"
-                StrokeShape="RoundRectangle 20,20,20,20"
-                Background="Transparent"
-                Margin="5" HeightRequest="40" WidthRequest="40"
-                HorizontalOptions="Start" VerticalOptions="Start">
-        <ImageButton x:Name="button" 
+            StrokeThickness="{OnPlatform 4, Android=2}"
+            StrokeShape="RoundRectangle 20,20,20,20"
+            Background="Transparent"
+            Margin="5" HeightRequest="40" WidthRequest="40"
+            HorizontalOptions="Start" VerticalOptions="Start">
+        <Grid Margin="0" Padding="0">
+            <ImageButton x:Name="button" 
                          BackgroundColor="Transparent"
                          HeightRequest="25" WidthRequest="25" 
                          HorizontalOptions="Center" VerticalOptions="Center">
-            <ImageButton.Source>
-                <FontImageSource x:Name="buttonSource" 
-                                 FontFamily="{OnPlatform iOS=MaterialIcons-Regular, Android=MaterialIcons-Regular.ttf#}"
-                                 Color="{AppThemeBinding Light={StaticResource ButtonColorLight}, Dark={StaticResource ButtonColorDark}}"/>
+                <ImageButton.Source>
+                    <FontImageSource x:Name="buttonSource" 
+                                     FontFamily="{OnPlatform iOS=MaterialIcons-Regular, Android=MaterialIcons-Regular.ttf#}"
+                                     Color="{AppThemeBinding Light={StaticResource ButtonColorLight}, Dark={StaticResource ButtonColorDark}}"/>
 
-            </ImageButton.Source>
-        </ImageButton>
+                </ImageButton.Source>
+            </ImageButton>
+
+            <ActivityIndicator x:Name="aiBusy"
+                               Color="{AppThemeBinding Light={StaticResource ButtonColorLight}, Dark={StaticResource ButtonColorDark}}"
+                               IsVisible="False" IsRunning="False"
+                               HeightRequest="30" Margin="0"
+                               HorizontalOptions="Center" VerticalOptions="Center" />
+        </Grid>
     </Border>
 </ContentView>

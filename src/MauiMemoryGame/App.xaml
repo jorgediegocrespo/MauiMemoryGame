@@ -47,17 +47,6 @@
                 <Setter Property="WidthRequest" Value="40" />
             </Style>
 
-            <Style TargetType="Button">
-                <Setter Property="CornerRadius" Value="20" />
-                <Setter Property="HeightRequest" Value="40" />
-                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
-                <Setter Property="VerticalOptions" Value="Center" />
-                <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource ButtonColorLight}, Dark={StaticResource ButtonColorDark}}" />
-                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource ButtonColorLight}, Dark={StaticResource ButtonColorDark}}" />
-                <Setter Property="BorderWidth" Value="2" />
-                <Setter Property="BackgroundColor" Value="Transparent" />
-            </Style>
-
         </ResourceDictionary>
     </Application.Resources>
 </Application>

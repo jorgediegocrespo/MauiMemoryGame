@@ -1,7 +1,4 @@
-﻿using System.Linq;
-using System.Reactive.Concurrency;
-
-namespace MauiMemoryGame.Features;
+﻿namespace MauiMemoryGame.Features;
 
 public class GameViewModel : BaseViewModel, IQueryAttributable
 {
@@ -13,18 +10,19 @@ public class GameViewModel : BaseViewModel, IQueryAttributable
         this.dialogService = dialogService;
     }
 
-    [Reactive] public Themes SelectedTheme { get; set; }
-    [Reactive] public Level SelectedLevel { get; set; }
-    [Reactive] public Card[,] Board { get; set; }
-    [Reactive] public bool GameOver { get; set; }
-    [Reactive] public bool GameWon { get; set; }
-    [Reactive] public int AttempsNumber { get; set; }
-    [Reactive] public int CardPairsFount { get; set; }
-    [Reactive] public TimeSpan RemainingTime { get; set; }
+    public Themes SelectedTheme { get; private set; }
+    public Level SelectedLevel { get; private set; }
+    [Reactive] public Card[,] Board { get; private set; }
+    [Reactive] public bool GameOver { get; private set; }
+    [Reactive] public bool GameWon { get; private set; }
+    [Reactive] public int AttempsNumber { get; private set; }
+    [Reactive] public int CardPairsFount { get; private set; }
+    [Reactive] public TimeSpan RemainingTime { get; private set; }
+    [Reactive] public bool IsBoardLoaded { get; set; }
 
     public TimeSpan TotalTime => SelectedLevel switch
     {
-        Level.Low => TimeSpan.FromSeconds(5), //TODO TimeSpan.FromMinutes(5),
+        Level.Low => TimeSpan.FromSeconds(15), //TODO TimeSpan.FromMinutes(5),
         Level.Medium => TimeSpan.FromMinutes(4),
         Level.High => TimeSpan.FromMinutes(2),
         _ => throw new InvalidOperationException()
@@ -50,29 +48,42 @@ public class GameViewModel : BaseViewModel, IQueryAttributable
     public ReactiveCommand<Tuple<Card, Card>, bool> EqualsCardsCommand { get; private set; }
     public extern bool IsComparingCards{ [ObservableAsProperty] get; }
 
-    public override async Task OnAppearingAsync()
-    {
-        await base.OnAppearingAsync();
-
-        disposables.Add(InitGameCommand.ThrownExceptions.Subscribe(logService.TraceError));
-        disposables.Add(InitGameCommand.IsExecuting.ToPropertyEx(this, x => x.IsInitiatingGame));
-
-        disposables.Add(EqualsCardsCommand.ThrownExceptions.Subscribe(logService.TraceError));
-        disposables.Add(EqualsCardsCommand.IsExecuting.ToPropertyEx(this, x => x.IsComparingCards));
-
-        InitGameCommand.Execute().Subscribe();
-    }
-
-    public override async Task OnDisappearingAsync()
-    {
-        await base.OnDisappearingAsync();
-        timer = null;
-    }
-
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
         SelectedTheme = (Themes)query[nameof(SelectedTheme)];
         SelectedLevel = (Level)query[nameof(SelectedLevel)];
+        RemainingTime = new TimeSpan(RemainingTime.Ticks);
+
+        InitGameCommand.Execute().Subscribe();
+    }
+
+    protected override void HandleActivation(CompositeDisposable disposables)
+    {
+        base.HandleActivation(disposables);
+
+        InitGameCommand.ThrownExceptions.Subscribe(logService.TraceError).DisposeWith(disposables);
+        InitGameCommand.IsExecuting.ToPropertyEx(this, x => x.IsInitiatingGame).DisposeWith(disposables);
+
+        EqualsCardsCommand.ThrownExceptions.Subscribe(logService.TraceError).DisposeWith(disposables);
+        EqualsCardsCommand.IsExecuting.ToPropertyEx(this, x => x.IsComparingCards).DisposeWith(disposables);
+
+        this.WhenAnyValue(x => x.IsBoardLoaded)
+            .Where(x => x)
+            .Subscribe(_ => InitTimer())
+            .DisposeWith(disposables);
+    }
+
+    protected override void HandleDeactivation()
+    {
+        base.HandleDeactivation();
+        timer?.Dispose();
+        timer = null;
+    }
+
+    public override async Task OnAppearingAsync()
+    {
+        await base.OnAppearingAsync();
+        InitTimer();
     }
 
     protected override void CreateCommands()
@@ -99,7 +110,6 @@ public class GameViewModel : BaseViewModel, IQueryAttributable
     {
         CreateBoard();
         InitValues();
-        InitTimer();
     }
 
     private void InitValues()
@@ -112,13 +122,12 @@ public class GameViewModel : BaseViewModel, IQueryAttributable
 
     private void InitTimer()
     {
-        if (timer != null)
+        if (timer != null || !IsBoardLoaded)
             return;
 
         RemainingTime = RemainingTime.TotalSeconds > 0 ? RemainingTime : new TimeSpan(TotalTime.Ticks);
 
         timer = Observable.Interval(TimeSpan.FromSeconds(1))
-            .TakeWhile(_ => RemainingTime > TimeSpan.Zero)
             .ObserveOn(RxApp.MainThreadScheduler)
             .Subscribe(
                 async _ =>
@@ -127,7 +136,6 @@ public class GameViewModel : BaseViewModel, IQueryAttributable
                     if (RemainingTime.TotalSeconds == 0)
                         await FinishGame(false);
                 });
-        disposables.Add(timer);
     }
 
     private void CreateBoard()
@@ -264,6 +272,6 @@ public class GameViewModel : BaseViewModel, IQueryAttributable
         timer?.Dispose();
         timer = null;
 
-        await navigationService.NavigateToGameOverPopup(GameWon);
+        await navigationService.NavigateToGameOverPopup(SelectedTheme, SelectedLevel, GameWon);
     }
 }

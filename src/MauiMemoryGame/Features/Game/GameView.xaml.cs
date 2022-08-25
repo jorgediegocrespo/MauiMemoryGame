@@ -9,34 +9,35 @@ public partial class GameView
     public GameView(GameViewModel viewModel)
 	{
         ViewModel = viewModel;
-		IsDrawingBoard = false;
         InitializeComponent();
-	}
-
-    [Reactive] public bool IsDrawingBoard { get; set; }
+	}    
 
 	protected override void CreateBindings(CompositeDisposable disposables)
 	{
 		base.CreateBindings(disposables);
 
-        disposables.Add(this.OneWayBind(ViewModel, vm => vm.NavigateBackCommand, v => v.btBack.Command));
-        disposables.Add(this.OneWayBind(ViewModel, vm => vm.AttempsNumber, v => v.lbAttemps.Text)); 
-        disposables.Add(this.OneWayBind(ViewModel, vm => vm.CardPairsFount, v => v.lbPairs.Text)); 
-        disposables.Add(this.OneWayBind(ViewModel, vm => vm.RemainingTime, v => v.lbTimer.Text, x => $"{x.Minutes.ToString().PadLeft(2, '0')}:{x.Seconds.ToString().PadLeft(2, '0')}"));
-        disposables.Add(this.OneWayBind(ViewModel, vm => vm.RemainingTime, v => v.timeProgress.ProgressPercentage, x => GetTimePercentage(x)));
+        this.OneWayBind(ViewModel, vm => vm.NavigateBackCommand, v => v.btBack.Command).DisposeWith(disposables);
+        this.OneWayBind(ViewModel, vm => vm.IsNavigatingBack, v => v.btBack.IsBusy).DisposeWith(disposables);
+
+        this.OneWayBind(ViewModel, vm => vm.AttempsNumber, v => v.lbAttemps.Text).DisposeWith(disposables);
+		this.OneWayBind(ViewModel, vm => vm.CardPairsFount, v => v.lbPairs.Text).DisposeWith(disposables);
+		this.OneWayBind(ViewModel, vm => vm.RemainingTime, v => v.lbTimer.Text, x => $"{x.Minutes.ToString().PadLeft(2, '0')}:{x.Seconds.ToString().PadLeft(2, '0')}").DisposeWith(disposables);
+		this.OneWayBind(ViewModel, vm => vm.RemainingTime, v => v.timeProgress.ProgressPercentage, x => GetTimePercentage(x)).DisposeWith(disposables);
     }
 
     protected override void ObserveValues(CompositeDisposable disposables)
 	{
 		base.ObserveValues(disposables);
 
-		disposables.Add(this.WhenAnyValue(x => x.ViewModel.Board)
-			.ObserveOn(RxApp.MainThreadScheduler)
-			.Subscribe(x => BuildBoard(x, disposables)));
-
-        disposables.Add(this.WhenAnyValue(x => x.ViewModel.IsInitiatingGame, x => x.IsDrawingBoard)
+		this.WhenAnyValue(x => x.ViewModel.Board)
             .ObserveOn(RxApp.MainThreadScheduler)
-            .Subscribe((x) => ManageBoardVisibility(x.Item1 || x.Item2)));
+            .Subscribe(x => BuildBoard(x, disposables))
+			.DisposeWith(disposables);
+
+        this.WhenAnyValue(x => x.ViewModel.IsInitiatingGame, x => x.ViewModel.IsBoardLoaded)
+            .ObserveOn(RxApp.MainThreadScheduler)
+            .Subscribe(x => ManageBoardVisibility(x.Item1 || !x.Item2))
+            .DisposeWith(disposables);
     }
 
 	private float GetTimePercentage(TimeSpan remainingTime)
@@ -52,19 +53,12 @@ public partial class GameView
 
 	private void BuildBoard(Card[,] board, CompositeDisposable disposables)
 	{
-		try
-		{
-			IsDrawingBoard = true;
-			if (board == null)
-				return;
+		if (board == null)
+			return;
 
-			CreateGridBoard();
-			FillGridBoard(board, disposables);
-		}
-		finally
-		{
-			IsDrawingBoard = false;
-        }
+		CreateGridBoard();
+		FillGridBoard(board, disposables);
+		ViewModel.IsBoardLoaded = true;
 	}
 
 	private void FillGridBoard(Card[,] board, CompositeDisposable disposables)
@@ -74,10 +68,23 @@ public partial class GameView
 			for (int column = 0; column < ViewModel.ColumnCount; column++)
 			{
 				CardView cardView = new CardView { Card = board[row, column] };
-                IObservable<EventPattern<object>> cardViewClicked = Observable.FromEventPattern(h => cardView.Clicked += h, h => cardView.Clicked -= h);
-                disposables.Add(cardViewClicked.Subscribe(x => TapGestureRecognizer_Tapped(x.Sender, null)));
 
-                gridBoard.Add(cardView, column, row);
+#if ANDROID
+				Observable
+					.FromEventPattern(h => cardView.Clicked += h, h => cardView.Clicked -= h)
+					.Subscribe(x => TapGestureRecognizer_Tapped(x.Sender, null))
+					.DisposeWith(disposables);
+#else
+				TapGestureRecognizer tapGestureRecognizer = new TapGestureRecognizer();
+                cardView.GestureRecognizers.Add(tapGestureRecognizer);
+
+				Observable
+					.FromEventPattern(h => tapGestureRecognizer.Tapped += h, h => tapGestureRecognizer.Tapped -= h)
+					.Subscribe(x => TapGestureRecognizer_Tapped(x.Sender, null))
+					.DisposeWith(disposables);
+
+#endif
+				gridBoard.Add(cardView, column, row);
             }
 		}
 	}
@@ -145,7 +152,7 @@ public partial class GameView
             return;
         }
 
-        await Task.Delay(2000);
+        await Task.Delay(1500);
         await Task.WhenAll(
             secondPairCard.HideContent(),
             firstPairCard.HideContent());
@@ -155,11 +162,72 @@ public partial class GameView
 
 	private void ManageBoardVisibility(bool isBuildingBoard)
 	{
-		aiCreatingBoard.IsRunning = isBuildingBoard;
+        bool showControls = aiCreatingBoard.IsVisible && !isBuildingBoard;
+
+        aiCreatingBoard.IsRunning = isBuildingBoard;
         aiCreatingBoard.IsVisible = isBuildingBoard;
 		gridBoard.IsVisible = !isBuildingBoard;
 		frPairs.IsVisible = !isBuildingBoard;
         frAttemps.IsVisible = !isBuildingBoard;
         frTimer.IsVisible = !isBuildingBoard;
-    }
+
+		if (showControls)
+			_ = CustomRunAppearingAnimationAsync();
+	}
+
+	private async Task CustomRunAppearingAnimationAsync()
+	{
+		await base.RunAppearingAnimationAsync();
+
+		var animation = new Animation();
+		double step = 0.5 / 4;
+
+		animation.Add(0, 0.5, new Animation(x => btBack.Opacity = x, 0, 1));
+		animation.Add(step * 1, 0.5 + step * 1, new Animation(x => frPairs.Opacity = x, 0, 1));
+		animation.Add(step * 2, 0.5 + step * 2, new Animation(x => frAttemps.Opacity = x, 0, 1));
+		animation.Add(step * 3, 0.5 + step * 3, new Animation(x => frTimer.Opacity = x, 0, 1));
+		animation.Add(step * 4, 0.5 + step * 4, new Animation(x => gridBoard.Opacity = x, 0, 1));
+
+		TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
+		animation.Commit(this, "appearingAnimation", length: 1000, finished: (x, y) =>
+		{
+			btBack.Opacity = 1;
+			frPairs.Opacity = 1;
+			frAttemps.Opacity = 1;
+			frTimer.Opacity = 1;
+			gridBoard.Opacity = 1;
+
+			tcs.SetResult(true);
+		});
+
+		await tcs.Task;
+	}
+
+	public override async Task RunDisappearingAnimationAsync()
+	{
+		await base.RunDisappearingAnimationAsync();
+
+		var animation = new Animation();
+		double step = 0.5 / 4;
+
+		animation.Add(0, 0.5, new Animation(x => btBack.Opacity = x, 1, 0));
+		animation.Add(step * 1, 0.5 + step * 1, new Animation(x => frPairs.Opacity = x, 1, 0));
+		animation.Add(step * 2, 0.5 + step * 2, new Animation(x => frAttemps.Opacity = x, 1, 0));
+		animation.Add(step * 3, 0.5 + step * 3, new Animation(x => frTimer.Opacity = x, 1, 0));
+		animation.Add(step * 4, 0.5 + step * 4, new Animation(x => gridBoard.Opacity = x, 1, 0));
+
+		TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
+		animation.Commit(this, "disappearingAnimation", length: 1000, finished: (x, y) =>
+		{
+			btBack.Opacity = 0;
+			frPairs.Opacity = 0;
+			frAttemps.Opacity = 0;
+			frTimer.Opacity = 0;
+			gridBoard.Opacity = 0;
+
+			tcs.SetResult(true);
+		});
+
+		await tcs.Task;
+	}
 }

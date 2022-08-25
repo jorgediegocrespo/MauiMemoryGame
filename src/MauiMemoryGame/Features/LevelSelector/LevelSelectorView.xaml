@@ -21,17 +21,19 @@
         </Grid.Background>
 
         <controls:RoundedButton x:Name="btBack" ButtonType="Back" Margin="-10,0"
-                                HorizontalOptions="Start" VerticalOptions="Start" />
+                                HorizontalOptions="Start" VerticalOptions="Start" 
+                                Opacity="0"/>
         
 
-        <Label Grid.Row="1" Grid.ColumnSpan="3" Style="{StaticResource lbTitle}"
+        <Label x:Name="lbTitle" Grid.Row="1" Grid.ColumnSpan="3" Style="{StaticResource lbTitle}"
                Text="{x:Static texts:TextsResource.LevelSelectorTitle}" 
                Margin="20"
-               HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand" />
+               HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand" 
+               Opacity="0"/>
 
-        <Button x:Name="btEasy" Grid.Row="2" Grid.Column="1" Text="{x:Static texts:TextsResource.LowLevel}" />
-        <Button x:Name="btMedium" Grid.Row="3" Grid.Column="1" Text="{x:Static texts:TextsResource.MediumLevel}" />
-        <Button x:Name="btHigh" Grid.Row="4" Grid.Column="1" Text="{x:Static texts:TextsResource.HighLevel}" />
+        <controls:CustomButton x:Name="btEasy" Grid.Row="2" Grid.Column="1" Text="{x:Static texts:TextsResource.LowLevel}" Opacity="0"/>
+        <controls:CustomButton x:Name="btMedium" Grid.Row="3" Grid.Column="1" Text="{x:Static texts:TextsResource.MediumLevel}" Opacity="0"/>
+        <controls:CustomButton x:Name="btHigh" Grid.Row="4" Grid.Column="1" Text="{x:Static texts:TextsResource.HighLevel}" Opacity="0"/>
 
     </Grid>
 

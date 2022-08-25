@@ -13,8 +13,10 @@
                 Shell.PresentationMode="ModalAnimated">
 
     <Grid>
-        <Frame Margin="20,50" Padding="0">
-            <Grid x:Name="gridContent" RowDefinitions="50,170,*,50" 
+        <Frame HeightRequest="420" 
+               Padding="0" Margin="20,0"
+               HorizontalOptions="FillAndExpand" VerticalOptions="Center">
+            <Grid x:Name="gridContent" RowDefinitions="50,170,130,50" 
                   RowSpacing="0"
                   Padding="10" Margin="0">
                 <Grid.Background>
@@ -41,9 +43,9 @@
                            Margin="10,0"/>
                 </VerticalStackLayout>
 
-                <Button x:Name="btPlayAgain" Grid.Row="3" Grid.Column="0" 
-                        Text="{x:Static texts:TextsResource.PlayAgain}" 
-                        Margin="30,0"/>
+                <controls:CustomButton x:Name="btPlayAgain" Grid.Row="3" Grid.Column="0" 
+                                       Text="{x:Static texts:TextsResource.PlayAgain}" 
+                                       Margin="30,0"/>
             </Grid>
         </Frame>
         

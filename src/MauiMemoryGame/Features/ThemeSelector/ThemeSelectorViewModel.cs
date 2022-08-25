@@ -20,21 +20,21 @@ public class ThemeSelectorViewModel : BaseViewModel
     public ReactiveCommand<Unit, Unit> SelectStarWarsCommand { get; private set; }
     public extern bool IsSelectingStarWars { [ObservableAsProperty] get; }
 
-    public override async Task OnAppearingAsync()
+    protected override void HandleActivation(CompositeDisposable disposables)
     {
-        await base.OnAppearingAsync();
+        base.HandleActivation(disposables);
 
-        disposables.Add(SelectDcCommand.ThrownExceptions.Subscribe(logService.TraceError));
-        disposables.Add(SelectDcCommand.IsExecuting.ToPropertyEx(this, x => x.IsSelectingDc));
+        SelectDcCommand.ThrownExceptions.Subscribe(logService.TraceError).DisposeWith(disposables);
+        SelectDcCommand.IsExecuting.ToPropertyEx(this, x => x.IsSelectingDc).DisposeWith(disposables);
 
-        disposables.Add(SelectMarvelCommand.ThrownExceptions.Subscribe(logService.TraceError));
-        disposables.Add(SelectMarvelCommand.IsExecuting.ToPropertyEx(this, x => x.IsSelectingMarvel));
+        SelectMarvelCommand.ThrownExceptions.Subscribe(logService.TraceError).DisposeWith(disposables);
+        SelectMarvelCommand.IsExecuting.ToPropertyEx(this, x => x.IsSelectingMarvel).DisposeWith(disposables);
 
-        disposables.Add(SelectSimpsonsCommand.ThrownExceptions.Subscribe(logService.TraceError));
-        disposables.Add(SelectSimpsonsCommand.IsExecuting.ToPropertyEx(this, x => x.IsSelectingSimpsons));
+        SelectSimpsonsCommand.ThrownExceptions.Subscribe(logService.TraceError).DisposeWith(disposables);
+        SelectSimpsonsCommand.IsExecuting.ToPropertyEx(this, x => x.IsSelectingSimpsons).DisposeWith(disposables);
 
-        disposables.Add(SelectStarWarsCommand.ThrownExceptions.Subscribe(logService.TraceError));
-        disposables.Add(SelectStarWarsCommand.IsExecuting.ToPropertyEx(this, x => x.IsSelectingStarWars));
+        SelectStarWarsCommand.ThrownExceptions.Subscribe(logService.TraceError).DisposeWith(disposables);
+        SelectStarWarsCommand.IsExecuting.ToPropertyEx(this, x => x.IsSelectingStarWars).DisposeWith(disposables);
     }
 
     protected override void CreateCommands()

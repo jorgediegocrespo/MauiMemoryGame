@@ -4,7 +4,6 @@ using SkiaSharp.Views.Maui.Controls;
 
 namespace MauiMemoryGame.Controls;
 
-
 public class CircleProgressBar : SKCanvasView
 {
     public static readonly BindableProperty StrokeWidthProperty = BindableProperty.Create(nameof(StrokeWidth), typeof(float), typeof(CircleProgressBar), 10f, propertyChanged: OnPropertyChanged);

@@ -14,11 +14,14 @@ public partial class GameOverPopupView
 	{
 		base.CreateBindings(disposables);
 
-        disposables.Add(this.OneWayBind(ViewModel, vm => vm.IsWinner, v => v.skiaLottie.Source, x => x ? new SKFileLottieImageSource { File = "win.json" } : new SKFileLottieImageSource { File = "lose.json" }));
-        disposables.Add(this.OneWayBind(ViewModel, vm => vm.IsWinner, v => v.lbTitle.Text, x => x ? TextsResource.GameWonTitle : TextsResource.GameLoseTitle));
-        disposables.Add(this.OneWayBind(ViewModel, vm => vm.IsWinner, v => v.lbSubtitle.Text, x => x ? TextsResource.GameWonSubtitle : TextsResource.GameLoseSubtitle));
+        this.OneWayBind(ViewModel, vm => vm.IsWinner, v => v.skiaLottie.Source, x => x ? new SKFileLottieImageSource { File = "win.json" } : new SKFileLottieImageSource { File = "lose.json" }).DisposeWith(disposables);
+        this.OneWayBind(ViewModel, vm => vm.IsWinner, v => v.lbTitle.Text, x => x ? TextsResource.GameWonTitle : TextsResource.GameLoseTitle).DisposeWith(disposables);
+		this.OneWayBind(ViewModel, vm => vm.IsWinner, v => v.lbSubtitle.Text, x => x ? TextsResource.GameWonSubtitle : TextsResource.GameLoseSubtitle).DisposeWith(disposables);
+        
+        this.OneWayBind(ViewModel, vm => vm.NavigateBackCommand, v => v.btClose.Command).DisposeWith(disposables);
+        this.OneWayBind(ViewModel, vm => vm.IsNavigatingBack, v => v.btClose.IsBusy).DisposeWith(disposables);
 
-        disposables.Add(this.OneWayBind(ViewModel, vm => vm.NavigateBackCommand, v => v.btClose.Command));
-        disposables.Add(this.OneWayBind(ViewModel, vm => vm.PlayAgainCommand, v => v.btPlayAgain.Command));
+        this.OneWayBind(ViewModel, vm => vm.PlayAgainCommand, v => v.btPlayAgain.Command).DisposeWith(disposables);
+        this.OneWayBind(ViewModel, vm => vm.IsGoingToPlayAgain, v => v.btPlayAgain.IsBusy).DisposeWith(disposables);
     }
 }

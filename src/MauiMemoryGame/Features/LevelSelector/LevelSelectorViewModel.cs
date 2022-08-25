@@ -7,7 +7,7 @@ public class LevelSelectorViewModel : BaseViewModel
     {
     }
 
-    [Reactive] public Themes SelectedTheme { get; set; }
+    [Reactive] public Themes SelectedTheme { get; private set; }
 
     public ReactiveCommand<Unit, Unit> SelectHighCommand { get; private set; }
     public extern bool IsSelectingHigh { [ObservableAsProperty] get; }
@@ -18,18 +18,18 @@ public class LevelSelectorViewModel : BaseViewModel
     public ReactiveCommand<Unit, Unit> SelectLowCommand { get; private set; }
     public extern bool IsSelectingLow { [ObservableAsProperty] get; }
 
-    public override async Task OnAppearingAsync()
+    protected override void HandleActivation(CompositeDisposable disposables)
     {
-        await base.OnAppearingAsync();
+        base.HandleActivation(disposables);
 
-        disposables.Add(SelectHighCommand.ThrownExceptions.Subscribe(logService.TraceError));
-        disposables.Add(SelectHighCommand.IsExecuting.ToPropertyEx(this, x => x.IsSelectingHigh));
+        SelectHighCommand.ThrownExceptions.Subscribe(logService.TraceError).DisposeWith(disposables);
+        SelectHighCommand.IsExecuting.ToPropertyEx(this, x => x.IsSelectingHigh).DisposeWith(disposables);
 
-        disposables.Add(SelectMediumCommand.ThrownExceptions.Subscribe(logService.TraceError));
-        disposables.Add(SelectMediumCommand.IsExecuting.ToPropertyEx(this, x => x.IsSelectingMedium));
+        SelectMediumCommand.ThrownExceptions.Subscribe(logService.TraceError).DisposeWith(disposables);
+        SelectMediumCommand.IsExecuting.ToPropertyEx(this, x => x.IsSelectingMedium).DisposeWith(disposables);
 
-        disposables.Add(SelectLowCommand.ThrownExceptions.Subscribe(logService.TraceError));
-        disposables.Add(SelectLowCommand.IsExecuting.ToPropertyEx(this, x => x.IsSelectingLow));
+        SelectLowCommand.ThrownExceptions.Subscribe(logService.TraceError).DisposeWith(disposables);
+        SelectLowCommand.IsExecuting.ToPropertyEx(this, x => x.IsSelectingLow).DisposeWith(disposables);
     }
 
     protected override void CreateCommands()
