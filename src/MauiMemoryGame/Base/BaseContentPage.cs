@@ -78,24 +78,6 @@ public class BaseContentPage<TViewModel> : ReactiveContentPage<TViewModel>, IAni
         ViewModel?.OnDisappearingAsync();
     }
 
-    protected override void OnNavigatedFrom(NavigatedFromEventArgs args)
-    {
-        base.OnNavigatedFrom(args);
-        ViewModel?.OnNavigatedFromAsync(args);
-    }
-
-    protected override void OnNavigatingFrom(NavigatingFromEventArgs args)
-    {
-        base.OnNavigatingFrom(args);
-        ViewModel?.OnNavigatingFromAsync(args);
-    }
-
-    protected override void OnNavigatedTo(NavigatedToEventArgs args)
-    {
-        base.OnNavigatedTo(args);
-        ViewModel?.OnNavigatedToAsync(args);
-    }
-
     protected override bool OnBackButtonPressed()
     {
         ViewModel?.NavigateBackCommand.Execute().Subscribe();

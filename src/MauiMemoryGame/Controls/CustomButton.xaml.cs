@@ -2,10 +2,8 @@ using System.Windows.Input;
 
 namespace MauiMemoryGame.Controls;
 
-public partial class CustomButton : ContentView
+public partial class CustomButton
 {
-    private CompositeDisposable disposables;
-
     public static readonly BindableProperty TextProperty = BindableProperty.Create(nameof(Text), typeof(string), typeof(CustomButton), defaultBindingMode: BindingMode.OneWay, propertyChanged: TextChanged);
     public static readonly BindableProperty IsBusyProperty = BindableProperty.Create(nameof(IsBusy), typeof(bool), typeof(CustomButton), defaultBindingMode: BindingMode.OneWay, propertyChanged: IsBusyChanged);
     public static readonly BindableProperty CommandProperty = BindableProperty.Create(nameof(Command), typeof(ICommand), typeof(CustomButton), defaultBindingMode: BindingMode.OneWay, propertyChanged: CommandChanged);
@@ -15,16 +13,6 @@ public partial class CustomButton : ContentView
     public CustomButton()
     {
         InitializeComponent();
-        btCustom.BindingContext = this;
-        aiBusy.BindingContext = this;
-
-        disposables = new CompositeDisposable();
-        CreateBindings();
-    }
-
-    ~CustomButton()
-    {
-        disposables?.Dispose();
     }
 
     public string Text
@@ -45,13 +33,16 @@ public partial class CustomButton : ContentView
         set => SetValue(CommandProperty, value);
     }
 
-    private void CreateBindings()
+    protected override void CreateBindings(CompositeDisposable disposables)
     {
+        base.CreateBindings(disposables);
+
         Observable
             .FromEventPattern(h => btCustom.Clicked += h, h => btCustom.Clicked -= h)
             .Subscribe(x => ButtonClicked?.Invoke(this, null))
             .DisposeWith(disposables);
     }
+
     private static void TextChanged(BindableObject bindable, object oldValue, object newValue)
     {
         ((CustomButton)bindable).btCustom.Text = (string)newValue;

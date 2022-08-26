@@ -37,22 +37,6 @@ public abstract class BaseViewModel : ReactiveObject, IActivatableViewModel
     {
         return Task.CompletedTask;
     }
-
-    public virtual Task OnNavigatedFromAsync(NavigatedFromEventArgs args)
-    {
-        return Task.CompletedTask;
-    }
-
-    public virtual Task OnNavigatingFromAsync(NavigatingFromEventArgs args)
-    {
-        return Task.CompletedTask;
-    }
-
-    public virtual Task OnNavigatedToAsync(NavigatedToEventArgs args)
-    {
-        return Task.CompletedTask;
-    }
-
     protected virtual void HandleActivation(CompositeDisposable disposables)
     {
         NavigateBackCommand.ThrownExceptions.Subscribe(logService.TraceError).DisposeWith(disposables);

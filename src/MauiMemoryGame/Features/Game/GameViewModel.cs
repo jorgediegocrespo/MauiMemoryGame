@@ -22,7 +22,7 @@ public class GameViewModel : BaseViewModel, IQueryAttributable
 
     public TimeSpan TotalTime => SelectedLevel switch
     {
-        Level.Low => TimeSpan.FromSeconds(15), //TODO TimeSpan.FromMinutes(5),
+        Level.Low => TimeSpan.FromMinutes(5),
         Level.Medium => TimeSpan.FromMinutes(4),
         Level.High => TimeSpan.FromMinutes(2),
         _ => throw new InvalidOperationException()
@@ -45,6 +45,9 @@ public class GameViewModel : BaseViewModel, IQueryAttributable
     public ReactiveCommand<Unit, Unit> InitGameCommand { get; private set; }
     public extern bool IsInitiatingGame { [ObservableAsProperty] get; }
 
+    public ReactiveCommand<Unit, Unit> InitTimerCommand { get; private set; }
+    public extern bool IsInitiatingTime { [ObservableAsProperty] get; }
+
     public ReactiveCommand<Tuple<Card, Card>, bool> EqualsCardsCommand { get; private set; }
     public extern bool IsComparingCards{ [ObservableAsProperty] get; }
 
@@ -64,13 +67,11 @@ public class GameViewModel : BaseViewModel, IQueryAttributable
         InitGameCommand.ThrownExceptions.Subscribe(logService.TraceError).DisposeWith(disposables);
         InitGameCommand.IsExecuting.ToPropertyEx(this, x => x.IsInitiatingGame).DisposeWith(disposables);
 
+        InitTimerCommand.ThrownExceptions.Subscribe(logService.TraceError).DisposeWith(disposables);
+        InitTimerCommand.IsExecuting.ToPropertyEx(this, x => x.IsInitiatingTime).DisposeWith(disposables);
+
         EqualsCardsCommand.ThrownExceptions.Subscribe(logService.TraceError).DisposeWith(disposables);
         EqualsCardsCommand.IsExecuting.ToPropertyEx(this, x => x.IsComparingCards).DisposeWith(disposables);
-
-        this.WhenAnyValue(x => x.IsBoardLoaded)
-            .Where(x => x)
-            .Subscribe(_ => InitTimer())
-            .DisposeWith(disposables);
     }
 
     protected override void HandleDeactivation()
@@ -83,7 +84,7 @@ public class GameViewModel : BaseViewModel, IQueryAttributable
     public override async Task OnAppearingAsync()
     {
         await base.OnAppearingAsync();
-        InitTimer();
+        InitTimerCommand.Execute().Subscribe();
     }
 
     protected override void CreateCommands()
@@ -91,6 +92,7 @@ public class GameViewModel : BaseViewModel, IQueryAttributable
         base.CreateCommands();
 
         InitGameCommand = ReactiveCommand.Create(InitGame);
+        InitTimerCommand = ReactiveCommand.Create(InitTimer);
         EqualsCardsCommand = ReactiveCommand.CreateFromTask<Tuple<Card, Card>, bool>(EqualsCards);
     }
 

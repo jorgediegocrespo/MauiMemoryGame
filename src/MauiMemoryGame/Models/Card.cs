@@ -1,4 +1,4 @@
-﻿namespace MauiMemoryGame.Features;
+﻿namespace MauiMemoryGame.Models;
 
 public class Card
 {

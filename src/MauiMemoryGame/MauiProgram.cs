@@ -1,5 +1,4 @@
 ﻿using SkiaSharp.Views.Maui.Controls.Hosting;
-using CommunityToolkit.Maui;
 
 namespace MauiMemoryGame;
 public static class MauiProgram
@@ -9,7 +8,6 @@ public static class MauiProgram
         MauiAppBuilder builder = MauiApp.CreateBuilder();
 
         builder
-            .UseMauiCommunityToolkit()
             .UseSkiaSharp()
             .UseMauiApp<App>()
             .ConfigureFonts(fonts =>

@@ -8,6 +8,24 @@ public partial class LevelSelectorView
         InitializeComponent();
 	}
 
+    protected override void HandleActivation(CompositeDisposable disposables)
+    {
+        base.HandleActivation(disposables);
+        btBack.HandleActivation(disposables);
+        btEasy.HandleActivation(disposables);
+        btMedium.HandleActivation(disposables);
+        btHigh.HandleActivation(disposables);
+    }
+
+    protected override void HandleDeactivation()
+    {
+        base.HandleDeactivation();
+        btBack.HandleDeactivation();
+        btEasy.HandleDeactivation();
+        btMedium.HandleDeactivation();
+        btHigh.HandleDeactivation();
+    }
+
     protected override void CreateBindings(CompositeDisposable disposables)
     {
         base.CreateBindings(disposables);

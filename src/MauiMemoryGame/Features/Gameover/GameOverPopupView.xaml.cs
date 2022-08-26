@@ -10,7 +10,21 @@ public partial class GameOverPopupView
 		InitializeComponent();
 	}
 
-	protected override void CreateBindings(CompositeDisposable disposables)
+    protected override void HandleActivation(CompositeDisposable disposables)
+    {
+        base.HandleActivation(disposables);
+        btClose.HandleActivation(disposables);
+        btPlayAgain.HandleActivation(disposables);
+    }
+
+    protected override void HandleDeactivation()
+    {
+        base.HandleDeactivation();
+        btClose.HandleDeactivation();
+        btPlayAgain.HandleDeactivation();
+    }
+
+    protected override void CreateBindings(CompositeDisposable disposables)
 	{
 		base.CreateBindings(disposables);
 

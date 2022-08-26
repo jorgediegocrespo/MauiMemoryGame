@@ -2,7 +2,7 @@
 
 namespace MauiMemoryGame.Controls;
 
-public partial class CardButton : ContentView
+public partial class CardButton
 {
     public static readonly BindableProperty CommandProperty = BindableProperty.Create(nameof(Command), typeof(ICommand), typeof(CardButton), propertyChanged: CommandChanged);
     public static readonly BindableProperty CornerRadiusProperty = BindableProperty.Create(nameof(CornerRadius), typeof(CornerRadius), typeof(CardButton), propertyChanged: CornerRadiusChanged);

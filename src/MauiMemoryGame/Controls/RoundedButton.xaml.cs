@@ -2,10 +2,8 @@ using System.Windows.Input;
 
 namespace MauiMemoryGame.Controls;
 
-public partial class RoundedButton : ContentView
+public partial class RoundedButton
 {
-    private CompositeDisposable disposables;
-
     public static readonly BindableProperty CommandProperty = BindableProperty.Create(nameof(Command), typeof(ICommand), typeof(RoundedButton), propertyChanged: CommandChanged);
     public static readonly BindableProperty ButtonTypeProperty = BindableProperty.Create(nameof(ButtonType), typeof(RoundedButtonType), typeof(RoundedButton), defaultBindingMode: BindingMode.OneWay, defaultValue: RoundedButtonType.Back, propertyChanged: ButtonTypeChanged);
     public static readonly BindableProperty IsBusyProperty = BindableProperty.Create(nameof(IsBusy), typeof(bool), typeof(RoundedButton), defaultBindingMode: BindingMode.OneWay, propertyChanged: IsBusyChanged);
@@ -14,16 +12,8 @@ public partial class RoundedButton : ContentView
 
     public RoundedButton()
 	{
-		InitializeComponent();
-     
-        disposables = new CompositeDisposable();
-        CreateEvents();
+		InitializeComponent();     
         RefreshIcon();
-    }
-
-    ~RoundedButton()
-    {
-        disposables?.Dispose();
     }
 
     public ICommand Command
@@ -44,10 +34,14 @@ public partial class RoundedButton : ContentView
         set => SetValue(IsBusyProperty, value);
     }
 
-    private void CreateEvents()
+    protected override void CreateEvents(CompositeDisposable disposables)
     {
-        IObservable<EventPattern<object>> btCustomClicked = Observable.FromEventPattern(h => button.Clicked += h, h => button.Clicked -= h);
-        btCustomClicked.Subscribe(x => Clicked?.Invoke(this, null)).DisposeWith(disposables);
+        base.CreateEvents(disposables);
+
+        Observable
+            .FromEventPattern(h => button.Clicked += h, h => button.Clicked -= h)
+            .Subscribe(x => Clicked?.Invoke(this, null))
+            .DisposeWith(disposables);
     }
 
     private void RefreshIcon()

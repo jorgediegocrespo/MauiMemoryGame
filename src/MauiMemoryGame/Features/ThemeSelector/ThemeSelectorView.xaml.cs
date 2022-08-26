@@ -8,6 +8,24 @@ public partial class ThemeSelectorView
 		InitializeComponent();
     }
 
+    protected override void HandleActivation(CompositeDisposable disposables)
+    {
+        base.HandleActivation(disposables);
+        btDc.HandleActivation(disposables);
+        btMarvel.HandleActivation(disposables);
+        btSimpson.HandleActivation(disposables);
+        btStarWars.HandleActivation(disposables);
+    }
+
+    protected override void HandleDeactivation()
+    {
+        base.HandleDeactivation();
+        btDc.HandleDeactivation();
+        btMarvel.HandleDeactivation();
+        btSimpson.HandleDeactivation();
+        btStarWars.HandleDeactivation();
+    }
+
     protected override void CreateBindings(CompositeDisposable disposables)
     {
         base.CreateBindings(disposables);

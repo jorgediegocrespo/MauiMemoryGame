@@ -2,6 +2,7 @@ namespace MauiMemoryGame.Features;
 
 public partial class GameView
 {
+	private List<CardView> cards;
 	private CardView firstPairCard;
 	private bool isManagingCards;
 
@@ -9,10 +10,24 @@ public partial class GameView
     public GameView(GameViewModel viewModel)
 	{
         ViewModel = viewModel;
+		cards = new List<CardView>();
         InitializeComponent();
-	}    
+	}
 
-	protected override void CreateBindings(CompositeDisposable disposables)
+    protected override void HandleActivation(CompositeDisposable disposables)
+    {
+        base.HandleActivation(disposables);
+        btBack.HandleActivation(disposables);
+    }
+
+    protected override void HandleDeactivation()
+    {
+        base.HandleDeactivation();
+        btBack.HandleDeactivation();
+        cards.ForEach(x => x.HandleDeactivation());
+    }
+
+    protected override void CreateBindings(CompositeDisposable disposables)
 	{
 		base.CreateBindings(disposables);
 
@@ -36,7 +51,7 @@ public partial class GameView
 
         this.WhenAnyValue(x => x.ViewModel.IsInitiatingGame, x => x.ViewModel.IsBoardLoaded)
             .ObserveOn(RxApp.MainThreadScheduler)
-            .Subscribe(x => ManageBoardVisibility(x.Item1 || !x.Item2))
+            .Subscribe(async x => await ManageBoardVisibilityAsync(x.Item1 || !x.Item2))
             .DisposeWith(disposables);
     }
 
@@ -58,8 +73,8 @@ public partial class GameView
 
 		CreateGridBoard();
 		FillGridBoard(board, disposables);
-		ViewModel.IsBoardLoaded = true;
-	}
+        ViewModel.IsBoardLoaded = true;
+    }
 
 	private void FillGridBoard(Card[,] board, CompositeDisposable disposables)
 	{
@@ -68,12 +83,14 @@ public partial class GameView
 			for (int column = 0; column < ViewModel.ColumnCount; column++)
 			{
 				CardView cardView = new CardView { Card = board[row, column] };
+				cardView.HandleActivation(disposables);
+				cards.Add(cardView);
 
 #if ANDROID
-				Observable
-					.FromEventPattern(h => cardView.Clicked += h, h => cardView.Clicked -= h)
-					.Subscribe(x => TapGestureRecognizer_Tapped(x.Sender, null))
-					.DisposeWith(disposables);
+                Observable
+                    .FromEventPattern(h => cardView.Clicked += h, h => cardView.Clicked -= h)
+                    .Subscribe(x => TapGestureRecognizer_Tapped(x.Sender, null))
+                    .DisposeWith(disposables);
 #else
 				TapGestureRecognizer tapGestureRecognizer = new TapGestureRecognizer();
                 cardView.GestureRecognizers.Add(tapGestureRecognizer);
@@ -84,7 +101,8 @@ public partial class GameView
 					.DisposeWith(disposables);
 
 #endif
-				gridBoard.Add(cardView, column, row);
+
+                gridBoard.Add(cardView, column, row);
             }
 		}
 	}
@@ -160,7 +178,7 @@ public partial class GameView
         firstPairCard = null;
     }
 
-	private void ManageBoardVisibility(bool isBuildingBoard)
+	private async Task ManageBoardVisibilityAsync(bool isBuildingBoard)
 	{
         bool showControls = aiCreatingBoard.IsVisible && !isBuildingBoard;
 
@@ -172,7 +190,10 @@ public partial class GameView
         frTimer.IsVisible = !isBuildingBoard;
 
 		if (showControls)
-			_ = CustomRunAppearingAnimationAsync();
+		{
+			await CustomRunAppearingAnimationAsync();
+			ViewModel.InitTimerCommand.Execute().Subscribe();
+		}
 	}
 
 	private async Task CustomRunAppearingAnimationAsync()
