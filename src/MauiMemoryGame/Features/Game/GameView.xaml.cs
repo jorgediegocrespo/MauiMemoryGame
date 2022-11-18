@@ -96,7 +96,7 @@ public partial class GameView
                 cardView.GestureRecognizers.Add(tapGestureRecognizer);
 
 				Observable
-					.FromEventPattern(h => tapGestureRecognizer.Tapped += h, h => tapGestureRecognizer.Tapped -= h)
+					.FromEventPattern<TappedEventArgs>(h => tapGestureRecognizer.Tapped += h, h => tapGestureRecognizer.Tapped -= h)
 					.Subscribe(x => TapGestureRecognizer_Tapped(x.Sender, null))
 					.DisposeWith(disposables);
 

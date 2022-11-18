@@ -43,12 +43,12 @@ public partial class CardView
         base.CreateEvents(disposables);
 
         Observable
-            .FromEventPattern(h => tapContent.Tapped += h, h => tapContent.Tapped -= h)
+            .FromEventPattern<TappedEventArgs>(h => tapContent.Tapped += h, h => tapContent.Tapped -= h)
             .Subscribe(x => Clicked?.Invoke(this, null))
             .DisposeWith(disposables);
 
         Observable
-            .FromEventPattern(h => tapBackwards.Tapped += h, h => tapBackwards.Tapped -= h)
+            .FromEventPattern<TappedEventArgs>(h => tapBackwards.Tapped += h, h => tapBackwards.Tapped -= h)
             .Subscribe(x => Clicked?.Invoke(this, null))
             .DisposeWith(disposables);
     }
