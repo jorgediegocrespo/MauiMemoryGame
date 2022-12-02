@@ -1,7 +1,7 @@
 ﻿namespace MauiMemoryGame.Features;
 
 [QueryProperty(nameof(SelectedTheme), nameof(SelectedTheme))]
-public class LevelSelectorViewModel : BaseViewModel
+public class LevelSelectorViewModel : BaseViewModel, IQueryAttributable
 {
     public LevelSelectorViewModel(ILogService logService, INavigationService navigationService) : base(logService, navigationService)
     {
@@ -46,4 +46,9 @@ public class LevelSelectorViewModel : BaseViewModel
     private Task SelectMediumAsync() => navigationService.NavigateToGame(SelectedTheme, Level.Medium);
 
     private Task SelectLowAsync() => navigationService.NavigateToGame(SelectedTheme, Level.Low);
+
+    public void ApplyQueryAttributes(IDictionary<string, object> query)
+    {
+        SelectedTheme = (Themes)query[nameof(SelectedTheme)];
+    }
 }
